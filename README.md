@@ -6,5 +6,5 @@ The attempt is to build a design system in code, that is AI-ready, production-gr
 
 This is just the beginning. Quite a bit of research and contextual documents will be maintained in this repository, [hopefully] capturing our thinking at every step of the way.
 
-Current members of the design team: Arkoprabho Bhattacharjee, Bhavana Sodha
+Current members of the design team: Arkoprabho Bhattacharjee, Bhavana Sodha  
 Past members (who've contributed to the current way of thinking): Arjun, Sankalp, Shobhan
