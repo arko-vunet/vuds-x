@@ -1,5 +1,5 @@
 # vuDS-x
----
+
 Experimental vuDS—VuNet Design System.
 
 The attempt is to build a design system in code, that is AI-ready, production-grade, and can enable prototyping at the speed of thought. That makes the AI-readiness bit supremely important. The system must have enough context to be able to accept PRDs and produce screens and clickable-flows/prototypes that follow established patterns and DS components. In essence, any generated screen must look homogenous, as if natively belonging to the same product.
