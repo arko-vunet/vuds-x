@@ -242,6 +242,76 @@ The AppShell meta-pattern from the research (Section 6) establishes the containe
 
 ---
 
+### Form Layouts and Field Widths
+
+Form-heavy screens are common in vuSmartMaps (alert configuration, data sources, pipelines, notification routes, RBAC). Their layouts must feel deliberate and consistent, not stretched or arbitrary.
+
+#### Page-Level Form Layout
+
+- **Form context types**
+  - **Inline forms**: embedded in tables, drawers, or panels. Optimized for density.
+  - **Primary-task forms**: dedicated New/Edit pages and major modals. Optimized for focus and comfort.
+
+- **Primary-task forms: centered within the content area**
+  - On desktop (≥1280px), the form lives in a **single main column**, horizontally centered within the main content area (to the right of the sidebar, below the top bar).
+  - That column has a **max-width between 720px and 960px** and never exceeds it, regardless of viewport width.
+  - The column respects the global **page gutters** (24px on each side at desktop), so fields never touch the edges.
+  - On laptop / tablet widths (1024–1279px), the same column can shrink down to **100% of available width**, but the max-width still caps it on larger screens.
+  - On narrower viewports (<1024px), the form becomes **edge-to-edge with 16–20px padding**, still a single column.
+
+- **Inline and drawer forms**
+  - In drawers and side panels, forms **fill the available panel width** up to the panel’s own max-width (e.g. 480–720px).
+  - The same internal rules for labels, fields, and spacing apply; only the container width changes.
+
+#### Field Width Rules
+
+- **No blindly 100% width for every input**
+  - Field width should **approximate expected input length**, within a consistent grid.
+  - Categories:
+    - **Short inputs** (ports, small thresholds, 2–4 char codes): `min(160px, ~30–40% of form width)` or inline with other fields.
+    - **Medium inputs** (names, IDs, single-line labels): **50–70% of the form column**, but never beyond **480–560px**.
+    - **Long inputs** (URLs, queries, JSON/YAML, long descriptions): **full width of the form column**, respecting the column’s max-width.
+
+- **Grid for multiple fields per row**
+  - Use a **12-column grid inside the form column**:
+    - Common case: labels/help + fields in a simple vertical stack, but when two fields share a row:
+      - Two related fields → 6/6 split at desktop, stacked vertically below **1024px**.
+      - Three small fields → 4/4/4 split at desktop, stacked vertically below **1024px**.
+  - This gives LLMs a clear pattern: “two related fields in one row → 6/6; otherwise stack”.
+
+- **Consistency**
+  - A given **field type in a given context** (for example, “threshold value” on alert config) should always use the same width pattern everywhere it appears.
+  - Avoid rows where one field is full-width and the neighbor is tiny; either align them to the grid (e.g. 8/4) or move the small field inline into the label/help text.
+
+#### Labels, Helper Text, and Alignment
+
+- **Label placement**
+  - Default for primary-task forms: **labels above fields**, left-aligned with the input (not a separate left column).
+  - This works better on narrow viewports and in localized UIs with longer label text.
+  - Exception: extremely dense admin-style tables or narrow side panels may use side-by-side labels where necessary.
+
+- **Helper and error text**
+  - Always **below the field**, left-aligned with the input’s left edge.
+  - Helper text uses secondary text color; error text uses caption size with the destructive color.
+
+- **Vertical rhythm**
+  - **16px spacing between fields** in the same logical group.
+  - **24px spacing between groups/sections** within a form.
+  - This keeps generated forms visually aligned with the rest of the spacing system.
+
+#### When Fields Should Span “Full Width”
+
+- **Full-width fields are appropriate when:**
+  - The content can be arbitrarily long (URLs, queries, JSON/YAML, long descriptions).
+  - The form is a primary task on the page (new alert, new data source, new pipeline) and the field is the main focus of that step.
+  - The form is inside a constrained container (drawer, narrow panel), where “full width” is already limited by the container.
+
+- **Even then, “full width” means full form column, not full viewport**
+  - The rule for primary-task forms is: **field width = 100% of the form column**, and the **form column itself has a max-width**.
+  - This avoids stretched, edge-to-edge inputs on ultrawide screens while keeping layouts responsive down to tablet sizes.
+
+---
+
 ## Principle 5: Navigation Legibility — Wayfinding in a Deep Product
 
 ### The Principle
