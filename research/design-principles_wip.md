@@ -481,6 +481,18 @@ At the same time, vuSmartMaps users are often monitoring dashboards on secondary
 
 Color carries meaning. Every color in the palette maps to a specific semantic role. No color is decorative. If you cannot name what a color means, it should not be in the interface.
 
+### The Model
+
+The color system is **semantic and parametric**, not a bag of hex codes:
+
+- **Semantic tokens first.** We define colors as roles — `primary`, `secondary`, `accent`, `muted`, `error`, `warning`, `success`, `info`, and their `*-foreground` counterparts. Components only reference these tokens (e.g., `--primary`, `--error-foreground`), never raw hex values.
+- **Each role has a tiny HSL ramp.** For each role we keep a small, fixed set of uses: soft background, solid background, border/ring, foreground (text/icons), and ghost/hover. All of these are derived from a shared \(H, S\) pair for that role, with different \(L\) (lightness) values and, where necessary, opacity. Changing a role’s hue or saturation updates all of its uses consistently.
+- **States are offsets, not new colors.** Default, hover, active, and disabled states are defined as predictable adjustments to the base role (e.g., hover = base \(L\) ± a fixed step, disabled = reduced saturation + higher lightness toward the surface background). No state introduces a brand‑new, unrelated color.
+- **Brand vs. severity are separate systems.** Brand accent colors power primary actions, navigation, and focus rings. Severity colors (critical, error, warning, info, success, unknown) are a separate, fixed ramp and are reserved purely for status/health signalling.
+- **Implementation detail lives in tokens.** When the marketing brand guide changes hues or introduces new “official” reds, ambers, or blues, we only update the underlying HSL/OKLCH values and lightness steps inside the token definitions. Component code and layouts do not change.
+
+This ensures any future palette refresh (from brand or accessibility work) becomes a token update exercise, not a ground‑up recoloring of the product.
+
 ### What This Means
 
 In an observability platform, color is infrastructure. Users don't just see colors — they read them. Red means something is broken. Yellow means something needs attention. Green means things are healthy. These associations are pre-trained by years of exposure to monitoring tools, traffic lights, and warning systems. vuSmartMaps must not violate these associations.
