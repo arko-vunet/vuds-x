@@ -17,6 +17,17 @@ Scope: Button, Tooltip, and core design-token definitions.
 - Added optional `loading` state to support slow API actions and async submit flows with clear in-button progress feedback.
 - Loading behavior: shows a left spinner (`Loader`), disables interaction while pending, and switches cursor to `cursor-progress`.
 - Icon-only loading behavior: shows spinner only (hides original icon while loading) to avoid dual-icon overlap.
+- Vertical sizing tightened for better density:
+  - `default` buttons now render at exactly 32px height.
+  - `sm` buttons now render at exactly 24px height.
+  - `lg` remains unchanged for now.
+- `sm` label typography reduced by one step (`text-xs`) to match the smaller control height.
+- Height tokens for `default` and `sm` moved to explicit px classes (`h-[32px]`, `h-[24px]`) to prevent rem-based drift from root font-size changes.
+- Icon-only sizing aligned with the same scale:
+  - `icon` now maps to 32px.
+  - Added `icon-sm` at 24px.
+  - Added `icon-lg` at 40px.
+- Icon-loading detection now applies to all icon-only sizes (`icon`, `icon-sm`, `icon-lg`) for consistent spinner behavior.
 
 ### Tooltip Component
 
@@ -32,6 +43,12 @@ Scope: Button, Tooltip, and core design-token definitions.
 - Added tooltip tokens: `--tooltip`, `--tooltip-foreground`, and theme color mappings.
 - Removed component-token overrides from `@media (prefers-color-scheme: dark)` to avoid mixed token sources.
 - Locked native UI shift to explicit theme state: `:root` uses `color-scheme: light`; `.dark` uses `color-scheme: dark`.
+- Root typography normalized to web defaults:
+  - Changed `:root` base from 18px to 16px (no desktop/mobile split).
+  - Reason: rem values should be predictable and align with ecosystem defaults; this avoids unexpected scaling (for example, `h-8` becoming 36px).
+- Kept visual hierarchy stable after root-size normalization:
+  - Body tracking scaled from `0.18px` to `0.16px`.
+  - `--radius` increased to `0.703125rem` so effective corner rounding stays consistent in px after the rem baseline changed.
 
 ### Changelog Page
 

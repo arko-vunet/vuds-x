@@ -21,8 +21,8 @@
   --heading: "IBM Plex Sans", system-ui, sans-serif;
   --mono: "IBM Plex Mono", ui-monospace, monospace;
 
-  font: 18px/145% var(--sans);
-  letter-spacing: 0.18px;
+  font: 16px/145% var(--sans);
+  letter-spacing: 0.16px;
   color-scheme: light;
   color: var(--text);
   background: var(--bg);
@@ -30,10 +30,6 @@
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-
-  @media (max-width: 1024px) {
-    font-size: 16px;
-  }
 
   /* Neutral ramp used by borders, muted surfaces, disabled states */
   --neutral-0: oklch(1 0 0);
@@ -132,7 +128,7 @@
 
   --chart-5: oklch(0.424 0.199 265.638);
 
-  --radius: 0.625rem;
+  --radius: 0.703125rem;
 
   --sidebar: var(--neutral-50);
   --sidebar-foreground: var(--neutral-900);

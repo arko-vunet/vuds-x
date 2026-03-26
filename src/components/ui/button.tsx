@@ -28,10 +28,12 @@ const buttonVariants = cva(
         link: "text-primary underline-offset-4 enabled:hover:underline",
       },
       size: {
-        default: "h-9 px-4 py-2 has-[>svg]:px-3",
-        sm: "h-8 rounded-sm gap-1.5 px-3 has-[>svg]:px-2.5",
+        default: "h-[32px] px-3 py-1.5 has-[>svg]:px-2.5",
+        sm: "h-[24px] rounded-sm text-xs gap-1.5 px-2.5 has-[>svg]:px-2",
         lg: "h-10 rounded-sm px-6 has-[>svg]:px-4",
-        icon: "size-9",
+        icon: "size-[32px]",
+        "icon-sm": "size-[24px]",
+        "icon-lg": "size-10",
       },
     },
     defaultVariants: {
@@ -58,7 +60,7 @@ function Button({
   }) {
   const Comp = asChild ? Slot : "button"
   const isDisabled = Boolean(props.disabled || loading)
-  const isIconLoading = Boolean(loading && size === "icon")
+  const isIconLoading = Boolean(loading && size?.startsWith("icon"))
   const shouldShowDisabledTooltip =
     !asChild && !loading && Boolean(props.disabled && disabledTooltip)
   const buttonNode = (
