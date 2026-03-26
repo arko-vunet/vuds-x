@@ -1,6 +1,8 @@
 import { useEffect } from "react"
 import { Button } from "@/components/ui/button"
-import { Mail, Plus, Trash2 } from "lucide-react"
+import { Badge } from "@/components/ui/badge"
+import { Spinner } from "@/components/ui/spinner"
+import { ArrowUpRight, BadgeCheck, Mail, Plus, Trash2 } from "lucide-react"
 
 const variants = [
   "default",
@@ -10,6 +12,7 @@ const variants = [
   "ghost",
   "link",
 ] as const
+const badgeVariants = ["default", "secondary", "destructive", "outline", "ghost"] as const
 
 function toTitleCase(value: string) {
   return value.charAt(0).toUpperCase() + value.slice(1)
@@ -41,7 +44,7 @@ export default function TrialPage() {
         }}
       >
         <div style={{ display: "grid", gap: "0.75rem" }}>
-          <h2>Variants</h2>
+          <h2>Button Variants</h2>
           <div style={{ display: "flex", gap: "0.75rem", flexWrap: "wrap" }}>
             {variants.map((variant) => (
               <Button key={variant} variant={variant}>
@@ -52,7 +55,7 @@ export default function TrialPage() {
         </div>
 
         <div style={{ display: "grid", gap: "0.75rem" }}>
-          <h2>Sizes</h2>
+          <h2>Button Sizes</h2>
           <div style={{ display: "flex", gap: "0.75rem", flexWrap: "wrap", alignItems: "center" }}>
             <Button size="sm">Small</Button>
             <Button size="default">Default</Button>
@@ -64,7 +67,7 @@ export default function TrialPage() {
         </div>
 
         <div style={{ display: "grid", gap: "0.75rem" }}>
-          <h2>Disabled</h2>
+          <h2>Disabled Button</h2>
           <div style={{ display: "flex", gap: "0.75rem", flexWrap: "wrap" }}>
             {variants.map((variant) => (
               <Button
@@ -88,7 +91,7 @@ export default function TrialPage() {
         </div>
 
         <div style={{ display: "grid", gap: "0.75rem" }}>
-          <h2>Loading</h2>
+          <h2>Button with Spinner</h2>
           <div style={{ display: "flex", gap: "0.75rem", flexWrap: "wrap" }}>
             <Button loading>Default</Button>
             <Button variant="destructive" loading>
@@ -134,7 +137,7 @@ export default function TrialPage() {
         </div>
 
         <div style={{ display: "grid", gap: "0.75rem" }}>
-          <h2>With Icons + Labels</h2>
+          <h2>Button with Icon + Label</h2>
           <div style={{ display: "flex", gap: "0.75rem", flexWrap: "wrap" }}>
             <Button>
               <Mail />
@@ -152,7 +155,7 @@ export default function TrialPage() {
         </div>
 
         <div style={{ display: "grid", gap: "0.75rem" }}>
-          <h2>Icon Only</h2>
+          <h2>Icon-only Button</h2>
           <div style={{ display: "flex", gap: "0.75rem", flexWrap: "wrap" }}>
             <Button size="icon" aria-label="Add item">
               <Plus />
@@ -171,6 +174,66 @@ export default function TrialPage() {
             </Button>
           </div>
         </div>
+
+        <hr />
+
+        <div style={{ display: "grid", gap: "0.75rem" }}>
+          <h2>Badge Variants</h2>
+          <div style={{ display: "flex", gap: "0.75rem", flexWrap: "wrap", alignItems: "center" }}>
+            {badgeVariants.map((variant) => (
+              <Badge key={variant} variant={variant}>
+                {toTitleCase(variant)}
+              </Badge>
+            ))}
+          </div>
+        </div>
+
+        <div style={{ display: "grid", gap: "0.75rem" }}>
+          <h2>Badge with Icon</h2>
+          <div style={{ display: "flex", gap: "0.75rem", flexWrap: "wrap", alignItems: "center" }}>
+            <Badge>
+              <BadgeCheck data-icon="inline-start" />
+              Verified
+            </Badge>
+            <Badge variant="secondary">
+              <Mail data-icon="inline-start" />
+              Email
+            </Badge>
+          </div>
+        </div>
+
+        <div style={{ display: "grid", gap: "0.75rem" }}>
+          <h2>Badge with Spinner</h2>
+          <div style={{ display: "flex", gap: "0.75rem", flexWrap: "wrap", alignItems: "center" }}>
+            <Badge variant="secondary">
+              <Spinner data-icon="inline-start" className="size-3" />
+              Generating
+            </Badge>
+            <Badge variant="destructive">
+              <Spinner data-icon="inline-start" className="size-3" />
+              Deleting
+            </Badge>
+          </div>
+        </div>
+
+        <div style={{ display: "grid", gap: "0.75rem" }}>
+          <h2>Badge as Link</h2>
+          <div style={{ display: "flex", gap: "0.75rem", flexWrap: "wrap", alignItems: "center" }}>
+            <Badge asChild variant="outline">
+              <a href="https://ui.shadcn.com/docs/components/radix/badge" target="_blank" rel="noreferrer">
+                Docs
+                <ArrowUpRight />
+              </a>
+            </Badge>
+            <Badge asChild variant="link">
+              <a href="/changelog">
+                Changelog
+                <ArrowUpRight />
+              </a>
+            </Badge>
+          </div>
+        </div>
+
       </section>
     </main>
   )
