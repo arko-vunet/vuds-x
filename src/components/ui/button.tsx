@@ -1,9 +1,9 @@
 import * as React from "react"
 import { Slot } from "@radix-ui/react-slot"
 import { cva, type VariantProps } from "class-variance-authority"
-import { Loader } from "lucide-react"
 
 import { cn } from "@/lib/utils"
+import { Spinner } from "@/components/ui/spinner"
 import {
   Tooltip,
   TooltipContent,
@@ -75,7 +75,7 @@ function Button({
       aria-busy={loading}
       disabled={asChild ? undefined : isDisabled}
     >
-      {loading ? <Loader className="animate-spin" aria-hidden="true" /> : null}
+      {loading ? <Spinner aria-hidden="true" /> : null}
       {isIconLoading ? null : children}
     </Comp>
   )
