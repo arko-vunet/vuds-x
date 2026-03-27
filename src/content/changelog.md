@@ -4,6 +4,30 @@ Canonical record of local shadcn customizations for team rollout.
 
 ## 2026-03-27
 
+Scope: Alert primitive rollout, token alignment, and trial page coverage updates.
+
+### Alert Component
+
+- Added `src/components/ui/alert.tsx`.
+- Introduced `Alert`, `AlertTitle`, `AlertDescription`, and `AlertAction`.
+- Added `variant` support for `default` and `destructive`.
+- Aligned API and structure with shadcn docs (`role="alert"`, icon + content layout, optional top-right action slot).
+- Fixed initial layout regression where description content collapsed into a narrow column; updated alert grid rules to use a stable explicit icon/content column split in this codebase.
+- `destructive` variant uses semantic design tokens (`destructive`, mapped from `critical`) rather than hardcoded colors.
+
+### Trial Page
+
+- Source: `src/pages/trial.tsx`.
+- Added dedicated Alert demos:
+  - success/default example
+  - info/default example
+  - destructive example
+  - warning example with action button.
+- Moved Alert demos out of the button demo cluster and into a standalone Alert section to match component grouping expectations.
+- Updated warning styling to use semantic warning tokens (`warning-high`, `warning-high-soft`, `warning-high-border`, `warning-high-foreground`) instead of ad-hoc amber utilities.
+
+## 2026-03-27
+
 Scope: Button Group and Dropdown Menu primitives, plus trial page demos.
 
 ### Button Group Component

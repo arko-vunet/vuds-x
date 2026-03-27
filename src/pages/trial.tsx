@@ -2,6 +2,12 @@ import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import {
+  Alert,
+  AlertAction,
+  AlertDescription,
+  AlertTitle,
+} from "@/components/ui/alert";
+import {
   ButtonGroup,
 } from "@/components/ui/button-group";
 import {
@@ -22,8 +28,12 @@ import {
   ArrowUpRight,
   BadgeCheck,
   Mail,
+  Info,
   Plus,
   Trash2,
+  AlertCircle,
+  AlertTriangle,
+  CheckCircle2,
   ArchiveIcon,
   ArrowLeftIcon,
   CalendarPlusIcon,
@@ -450,6 +460,54 @@ export default function TrialPage() {
                 <ArrowUpRight />
               </a>
             </Badge>
+          </div>
+        </div>
+
+        <hr />
+
+        <div style={{ display: "grid", gap: "0.75rem" }}>
+          <h2>Alert</h2>
+          <div style={{ display: "grid", gap: "0.75rem" }}>
+            <Alert>
+              <CheckCircle2 />
+              <AlertTitle>Payment successful</AlertTitle>
+              <AlertDescription>
+                Your payment of $29.99 has been processed. A receipt has been
+                sent to your email address.
+              </AlertDescription>
+            </Alert>
+
+            <Alert>
+              <Info />
+              <AlertTitle>New feature available</AlertTitle>
+              <AlertDescription>
+                We&apos;ve added dark mode support. You can enable it in your
+                account settings.
+              </AlertDescription>
+            </Alert>
+
+            <Alert variant="destructive">
+              <AlertCircle />
+              <AlertTitle>Payment failed</AlertTitle>
+              <AlertDescription>
+                Your payment could not be processed. Please check your payment
+                method and try again.
+              </AlertDescription>
+            </Alert>
+
+            <Alert className="bg-warning-high-soft border-warning-high-border text-warning-high-foreground [&>svg]:text-warning-high">
+              <AlertTriangle />
+              <AlertTitle>Your subscription will expire in 3 days.</AlertTitle>
+              <AlertDescription>
+                Renew now to avoid service interruption or upgrade to a paid
+                plan to continue using the service.
+              </AlertDescription>
+              <AlertAction>
+                <Button variant="outline" size="sm">
+                  Renew
+                </Button>
+              </AlertAction>
+            </Alert>
           </div>
         </div>
       </section>
