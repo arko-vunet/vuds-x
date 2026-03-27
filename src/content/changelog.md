@@ -4,7 +4,7 @@ Canonical record of local shadcn customizations for team rollout.
 
 ## 2026-03-27
 
-Scope: Alert primitive rollout and semantic color-token refinement, plus Button Group and Dropdown Menu primitives and expanded trial page coverage.
+Scope: Alert primitive rollout and semantic color-token refinement, plus Button Group, Dropdown Menu, Checkbox, and Radio Group primitives with expanded trial page coverage.
 
 ### Alert Component
 
@@ -29,6 +29,8 @@ Scope: Alert primitive rollout and semantic color-token refinement, plus Button 
 ### Trial Page
 
 - Source: `src/pages/trial.tsx`.
+- Added Checkbox demo.
+- Added Radio Group demo.
 - Added dedicated Alert demos:
   - success/default example
   - info/default example
@@ -36,8 +38,35 @@ Scope: Alert primitive rollout and semantic color-token refinement, plus Button 
   - severe warning example with action button
   - mild warning example
   - success variant example.
-- Moved Alert demos out of the button demo cluster and into a standalone Alert section to match component grouping expectations.
-- Replaced ad-hoc warning class overrides with explicit alert variants for predictable semantic styling.
+- Added Button Group demo coverage:
+  - base horizontal group
+  - vertical group
+  - text + button group
+  - complex grouped layout with nested dropdown interactions and radio submenu state.
+- Updated section separators so `<hr />` appears only at major section boundaries:
+  - between button demos and button-group demos
+  - between button-group demos and badge demos.
+
+### Checkbox Component
+
+- Added `src/components/ui/checkbox.tsx` using `@radix-ui/react-checkbox` primitives.
+- Added project dependency: `@radix-ui/react-checkbox`.
+- Included a basic controlled Checkbox demo in `src/pages/trial.tsx` ("Enable email updates") for immediate visual and interaction testing.
+
+### Label Component
+
+- Added `src/components/ui/label.tsx` using `@radix-ui/react-label` primitives.
+- Added project dependency: `@radix-ui/react-label`.
+- Introduced for consistency with shadcn form-control labeling patterns and upcoming form-field composition work.
+
+### Radio Group Component
+
+- Added `src/components/ui/radio-group.tsx` using `@radix-ui/react-radio-group` primitives.
+- Added project dependency: `@radix-ui/react-radio-group`.
+- Finalized radio visual behavior to:
+  - unselected state uses neutral border (`border-input`)
+  - selected state uses a clear primary fill dot (`bg-current` in indicator).
+- Included a basic standalone Radio Group demo in `src/pages/trial.tsx` (`Default`, `Comfortable`, `Compact`) without form wrappers.
 
 ### Button Group Component
 
@@ -57,18 +86,6 @@ Scope: Alert primitive rollout and semantic color-token refinement, plus Button 
   - `DropdownMenuRadioGroup`, `DropdownMenuRadioItem`
   - plus `DropdownMenuCheckboxItem`, `DropdownMenuLabel`, `DropdownMenuShortcut`, `DropdownMenuPortal`.
 - Added item variants support (`default`, `destructive`) so destructive actions can be styled in menus.
-
-### Trial Page (Button Group + Dropdown Coverage)
-
-- Source: `src/pages/trial.tsx`.
-- Added Button Group demo coverage:
-  - base horizontal group
-  - vertical group
-  - text + button group
-  - complex grouped layout with nested dropdown interactions and radio submenu state.
-- Updated section separators so `<hr />` appears only at major section boundaries:
-  - between button demos and button-group demos
-  - between button-group demos and badge demos.
 
 ## 2026-03-26
 

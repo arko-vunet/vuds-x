@@ -7,9 +7,7 @@ import {
   AlertDescription,
   AlertTitle,
 } from "@/components/ui/alert";
-import {
-  ButtonGroup,
-} from "@/components/ui/button-group";
+import { ButtonGroup } from "@/components/ui/button-group";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -23,6 +21,8 @@ import {
   DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { Checkbox } from "@/components/ui/checkbox";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Spinner } from "@/components/ui/spinner";
 import {
   ArrowUpRight,
@@ -69,6 +69,7 @@ function toTitleCase(value: string) {
 
 export default function TrialPage() {
   const [label, setLabel] = useState("personal");
+  const [emailUpdatesEnabled, setEmailUpdatesEnabled] = useState(false);
 
   useEffect(() => {
     const previousTitle = document.title;
@@ -461,6 +462,56 @@ export default function TrialPage() {
               </a>
             </Badge>
           </div>
+        </div>
+
+        <hr />
+
+        <div style={{ display: "grid", gap: "0.75rem" }}>
+          <h2>Checkbox</h2>
+          <label
+            htmlFor="trial-email-updates"
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              gap: "0.625rem",
+              cursor: "pointer",
+              width: "fit-content",
+            }}
+          >
+            <Checkbox
+              id="trial-email-updates"
+              checked={emailUpdatesEnabled}
+              onCheckedChange={(checked) =>
+                setEmailUpdatesEnabled(checked === true)
+              }
+            />
+            <span style={{ fontSize: "0.95rem" }}>Enable email updates</span>
+          </label>
+          <p
+            style={{ color: "var(--muted-foreground)", marginLeft: "1.625rem" }}
+          >
+            Current state: {emailUpdatesEnabled ? "checked" : "unchecked"}
+          </p>
+        </div>
+
+        <hr />
+
+        <div style={{ display: "grid", gap: "0.75rem" }}>
+          <h2>Radio Group</h2>
+          <RadioGroup defaultValue="comfortable" className="w-fit">
+            <div className="flex items-center gap-3">
+              <RadioGroupItem value="default" id="r1" />
+              <span style={{ fontSize: "0.95rem" }}>Default</span>
+            </div>
+            <div className="flex items-center gap-3">
+              <RadioGroupItem value="comfortable" id="r2" />
+              <span style={{ fontSize: "0.95rem" }}>Comfortable</span>
+            </div>
+            <div className="flex items-center gap-3">
+              <RadioGroupItem value="compact" id="r3" />
+              <span style={{ fontSize: "0.95rem" }}>Compact</span>
+            </div>
+          </RadioGroup>
         </div>
 
         <hr />
