@@ -4,7 +4,7 @@ Canonical record of local shadcn customizations for team rollout.
 
 ## 2026-03-27
 
-Scope: Alert primitive rollout, token alignment, and trial page coverage updates.
+Scope: Alert primitive rollout, token alignment, Button Group and Dropdown Menu primitives, plus trial page coverage updates.
 
 ### Alert Component
 
@@ -26,10 +26,6 @@ Scope: Alert primitive rollout, token alignment, and trial page coverage updates
 - Moved Alert demos out of the button demo cluster and into a standalone Alert section to match component grouping expectations.
 - Updated warning styling to use semantic warning tokens (`warning-high`, `warning-high-soft`, `warning-high-border`, `warning-high-foreground`) instead of ad-hoc amber utilities.
 
-## 2026-03-27
-
-Scope: Button Group and Dropdown Menu primitives, plus trial page demos.
-
 ### Button Group Component
 
 - Added `src/components/ui/button-group.tsx`.
@@ -49,7 +45,7 @@ Scope: Button Group and Dropdown Menu primitives, plus trial page demos.
   - plus `DropdownMenuCheckboxItem`, `DropdownMenuLabel`, `DropdownMenuShortcut`, `DropdownMenuPortal`.
 - Added item variants support (`default`, `destructive`) so destructive actions can be styled in menus.
 
-### Trial Page
+### Trial Page (Button Group + Dropdown Coverage)
 
 - Source: `src/pages/trial.tsx`.
 - Added Button Group demo coverage:
