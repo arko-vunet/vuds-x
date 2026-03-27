@@ -24,6 +24,7 @@ import {
 import { Checkbox } from "@/components/ui/checkbox";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Spinner } from "@/components/ui/spinner";
+import { toast } from "sonner";
 import {
   ArrowUpRight,
   BadgeCheck,
@@ -65,6 +66,12 @@ const badgeVariants = [
 
 function toTitleCase(value: string) {
   return value.charAt(0).toUpperCase() + value.slice(1);
+}
+
+function wait(ms: number) {
+  return new Promise((resolve) => {
+    window.setTimeout(resolve, ms);
+  });
 }
 
 export default function TrialPage() {
@@ -512,6 +519,86 @@ export default function TrialPage() {
               <span style={{ fontSize: "0.95rem" }}>Compact</span>
             </div>
           </RadioGroup>
+        </div>
+
+        <hr />
+
+        <div style={{ display: "grid", gap: "0.75rem" }}>
+          <h2>Sonner (Toast) Variants</h2>
+          <div style={{ display: "flex", gap: "0.75rem", flexWrap: "wrap" }}>
+            <Button
+              variant="outline"
+              onClick={() => {
+                toast("Saved successfully.");
+              }}
+            >
+              Without Description
+            </Button>
+            <Button
+              variant="outline"
+              onClick={() => {
+                toast("Saved successfully.", {
+                  description: "Your changes are now live.",
+                });
+              }}
+            >
+              With Description
+            </Button>
+            <Button
+              variant="outline"
+              onClick={() => {
+                toast("Saved successfully.", {
+                  description: "Your changes are now live.",
+                  action: {
+                    label: "Undo",
+                    onClick: () => {
+                      toast.info("Changes restored.");
+                    },
+                  },
+                });
+              }}
+            >
+              With Button
+            </Button>
+          </div>
+          <div style={{ display: "flex", gap: "0.75rem", flexWrap: "wrap" }}>
+            <Button variant="outline" onClick={() => toast("Default toast")}>
+              Default
+            </Button>
+            <Button
+              variant="outline"
+              onClick={() => toast.success("Success toast")}
+            >
+              Success
+            </Button>
+            <Button variant="outline" onClick={() => toast.info("Info toast")}>
+              Info
+            </Button>
+            <Button
+              variant="outline"
+              onClick={() => toast.warning("Warning toast")}
+            >
+              Warning
+            </Button>
+            <Button
+              variant="outline"
+              onClick={() => toast.error("Error toast")}
+            >
+              Error
+            </Button>
+            <Button
+              variant="outline"
+              onClick={() => {
+                toast.promise(wait(1500), {
+                  loading: "Saving...",
+                  success: "Saved",
+                  error: "Could not save",
+                });
+              }}
+            >
+              Promise
+            </Button>
+          </div>
         </div>
 
         <hr />

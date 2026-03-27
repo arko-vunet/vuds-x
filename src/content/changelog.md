@@ -4,7 +4,7 @@ Canonical record of local shadcn customizations for team rollout.
 
 ## 2026-03-27
 
-Scope: Alert primitive rollout and semantic color-token refinement, plus Button Group, Dropdown Menu, Checkbox, and Radio Group primitives with expanded trial page coverage.
+Scope: Alert primitive rollout and semantic color-token refinement, plus Button Group, Dropdown Menu, Checkbox, Radio Group, and Sonner primitives with expanded trial page coverage.
 
 ### Alert Component
 
@@ -67,6 +67,24 @@ Scope: Alert primitive rollout and semantic color-token refinement, plus Button 
   - unselected state uses neutral border (`border-input`)
   - selected state uses a clear primary fill dot (`bg-current` in indicator).
 - Included a basic standalone Radio Group demo in `src/pages/trial.tsx` (`Default`, `Comfortable`, `Compact`) without form wrappers.
+
+### Sonner (Toast) Component
+
+- Added `src/components/ui/sonner.tsx` and installed `sonner`.
+- Mounted global toaster in `src/main.tsx` via `<Toaster richColors />`.
+- Added Sonner demo coverage in `src/pages/trial.tsx`:
+  - `Without Description`
+  - `With Description`
+  - `With Button` (description + action button)
+  - type examples: `Default`, `Success`, `Info`, `Warning`, `Error`, `Promise`.
+- Kept Sonner's native toast layout for consistency across all toast variants.
+- Centralized toast type icons in the shared toaster config for consistency with existing iconography:
+  - success: `CheckCircle2`
+  - info: `Info`
+  - warning: `AlertTriangle`
+  - error: `AlertCircle`
+  - loading/promise: shared `Spinner` component.
+- Styled Sonner action buttons globally via toaster options to use primary token colors (`--primary`, `--primary-foreground`) with small-button sizing.
 
 ### Button Group Component
 

@@ -8,6 +8,7 @@ import './index.css'
 import App from './App.tsx'
 import ChangelogPage from './pages/changelog.tsx'
 import TrialPage from './pages/trial.tsx'
+import { Toaster } from './components/ui/sonner.tsx'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
@@ -17,6 +18,7 @@ createRoot(document.getElementById('root')!).render(
         <Route path="/trial" element={<TrialPage />} />
         <Route path="/changelog" element={<ChangelogPage />} />
       </Routes>
+      <Toaster richColors position="top-right" />
     </BrowserRouter>
   </StrictMode>,
 )
