@@ -486,7 +486,7 @@ export default function TrialPage() {
               </AlertDescription>
             </Alert>
 
-            <Alert variant="destructive">
+            <Alert variant="critical">
               <AlertCircle />
               <AlertTitle>Payment failed</AlertTitle>
               <AlertDescription>
@@ -495,7 +495,7 @@ export default function TrialPage() {
               </AlertDescription>
             </Alert>
 
-            <Alert className="bg-warning-high-soft border-warning-high-border text-warning-high-foreground [&>svg]:text-warning-high">
+            <Alert variant="severeWarning">
               <AlertTriangle />
               <AlertTitle>Your subscription will expire in 3 days.</AlertTitle>
               <AlertDescription>
@@ -507,6 +507,24 @@ export default function TrialPage() {
                   Renew
                 </Button>
               </AlertAction>
+            </Alert>
+
+            <Alert variant="mildWarning">
+              <AlertTriangle />
+              <AlertTitle>Your trial ends in 14 days.</AlertTitle>
+              <AlertDescription>
+                You can continue testing all features. Add billing details any
+                time to avoid interruptions at the end of your trial.
+              </AlertDescription>
+            </Alert>
+
+            <Alert variant="success">
+              <CheckCircle2 />
+              <AlertTitle>Backup completed successfully</AlertTitle>
+              <AlertDescription>
+                Your workspace settings and data were backed up. No further
+                action is required.
+              </AlertDescription>
             </Alert>
           </div>
         </div>

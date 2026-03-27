@@ -4,16 +4,27 @@ Canonical record of local shadcn customizations for team rollout.
 
 ## 2026-03-27
 
-Scope: Alert primitive rollout, token alignment, Button Group and Dropdown Menu primitives, plus trial page coverage updates.
+Scope: Alert primitive rollout and semantic color-token refinement, plus Button Group and Dropdown Menu primitives and expanded trial page coverage.
 
 ### Alert Component
 
 - Added `src/components/ui/alert.tsx`.
 - Introduced `Alert`, `AlertTitle`, `AlertDescription`, and `AlertAction`.
-- Added `variant` support for `default` and `destructive`.
+- Aligned container radius with buttons (`rounded-sm`) for consistent control geometry.
+- Expanded `variant` support to: `default`, `mildWarning`, `severeWarning`, `critical`, `success`, plus `destructive` as a compatibility alias.
 - Aligned API and structure with shadcn docs (`role="alert"`, icon + content layout, optional top-right action slot).
 - Fixed initial layout regression where description content collapsed into a narrow column; updated alert grid rules to use a stable explicit icon/content column split in this codebase.
-- `destructive` variant uses semantic design tokens (`destructive`, mapped from `critical`) rather than hardcoded colors.
+- `AlertDescription` now uses `text-current/90` so text remains legible across semantic filled surfaces.
+- `critical`/`destructive` alerts now reuse the shared critical/destructive tokens (`critical`, `critical-soft`, `critical-border`) to reduce redundant red ramps.
+
+### Semantic Color Tokens
+
+- Added semantic subtle-surface ramps for reusable non-component-specific usage:
+  - `warning-mild-subtle`, `warning-mild-subtle-border`, `warning-mild-subtle-foreground`
+  - `warning-severe-subtle`, `warning-severe-subtle-border`, `warning-severe-subtle-foreground`
+  - `success-subtle`, `success-subtle-border`, `success-subtle-foreground`
+- Renamed warning severity tokens from `warning-low-*`/`warning-high-*` to `warning-mild-*`/`warning-severe-*` for clearer intent alignment with component variant names.
+- Updated light and dark theme definitions and `@theme inline` mappings to use the renamed warning tokens and new subtle-surface aliases.
 
 ### Trial Page
 
@@ -21,10 +32,12 @@ Scope: Alert primitive rollout, token alignment, Button Group and Dropdown Menu 
 - Added dedicated Alert demos:
   - success/default example
   - info/default example
-  - destructive example
-  - warning example with action button.
+  - critical example
+  - severe warning example with action button
+  - mild warning example
+  - success variant example.
 - Moved Alert demos out of the button demo cluster and into a standalone Alert section to match component grouping expectations.
-- Updated warning styling to use semantic warning tokens (`warning-high`, `warning-high-soft`, `warning-high-border`, `warning-high-foreground`) instead of ad-hoc amber utilities.
+- Replaced ad-hoc warning class overrides with explicit alert variants for predictable semantic styling.
 
 ### Button Group Component
 

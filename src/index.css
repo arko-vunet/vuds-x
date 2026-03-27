@@ -48,12 +48,12 @@
   --primary-h: 278;
   --primary-s: 77%;
   --primary-l: 47%;
-  --warning-low-h: 48;
-  --warning-low-s: 95%;
-  --warning-low-l: 52%;
-  --warning-high-h: 28;
-  --warning-high-s: 92%;
-  --warning-high-l: 52%;
+  --warning-mild-h: 48;
+  --warning-mild-s: 95%;
+  --warning-mild-l: 52%;
+  --warning-severe-h: 28;
+  --warning-severe-s: 92%;
+  --warning-severe-l: 52%;
   --critical-h: 2;
   --critical-s: 78%;
   --critical-l: 54%;
@@ -84,15 +84,21 @@
   --muted-foreground: var(--neutral-600);
   --accent-foreground: var(--neutral-900);
 
-  --warning-low: hsl(var(--warning-low-h) var(--warning-low-s) var(--warning-low-l));
-  --warning-low-foreground: hsl(var(--warning-low-h) 82% 18%);
-  --warning-low-soft: hsl(var(--warning-low-h) var(--warning-low-s) 94%);
-  --warning-low-border: hsl(var(--warning-low-h) 82% 68%);
+  --warning-mild: hsl(
+    var(--warning-mild-h) var(--warning-mild-s) var(--warning-mild-l)
+  );
+  --warning-mild-foreground: hsl(var(--warning-mild-h) 82% 18%);
+  --warning-mild-soft: hsl(var(--warning-mild-h) var(--warning-mild-s) 94%);
+  --warning-mild-border: hsl(var(--warning-mild-h) 82% 68%);
 
-  --warning-high: hsl(var(--warning-high-h) var(--warning-high-s) var(--warning-high-l));
-  --warning-high-foreground: hsl(var(--warning-high-h) 84% 17%);
-  --warning-high-soft: hsl(var(--warning-high-h) var(--warning-high-s) 94%);
-  --warning-high-border: hsl(var(--warning-high-h) 80% 68%);
+  --warning-severe: hsl(
+    var(--warning-severe-h) var(--warning-severe-s) var(--warning-severe-l)
+  );
+  --warning-severe-foreground: hsl(var(--warning-severe-h) 84% 17%);
+  --warning-severe-soft: hsl(
+    var(--warning-severe-h) var(--warning-severe-s) 94%
+  );
+  --warning-severe-border: hsl(var(--warning-severe-h) 80% 68%);
 
   --critical: hsl(var(--critical-h) var(--critical-s) var(--critical-l));
   --critical-foreground: hsl(var(--critical-h) 82% 98%);
@@ -103,6 +109,19 @@
   --success-foreground: hsl(var(--success-h) 80% 98%);
   --success-soft: hsl(var(--success-h) 72% 94%);
   --success-border: hsl(var(--success-h) 56% 64%);
+
+  /* Subtle semantic surfaces: light fill + readable foreground */
+  --warning-mild-subtle: hsl(var(--warning-mild-h) 94% 95%);
+  --warning-mild-subtle-border: hsl(var(--warning-mild-h) 76% 72%);
+  --warning-mild-subtle-foreground: hsl(var(--warning-mild-h) 70% 20%);
+
+  --warning-severe-subtle: hsl(var(--warning-severe-h) 94% 95%);
+  --warning-severe-subtle-border: hsl(var(--warning-severe-h) 78% 70%);
+  --warning-severe-subtle-foreground: hsl(var(--warning-severe-h) 72% 20%);
+
+  --success-subtle: hsl(var(--success-h) 64% 94%);
+  --success-subtle-border: hsl(var(--success-h) 46% 68%);
+  --success-subtle-foreground: hsl(var(--success-h) 52% 21%);
 
   --info: hsl(var(--info-h) var(--info-s) var(--info-l));
   --info-foreground: hsl(var(--info-h) 80% 98%);
@@ -237,15 +256,15 @@ code {
   --accent: var(--neutral-100);
   --accent-foreground: var(--neutral-900);
 
-  --warning-low: hsl(var(--warning-low-h) var(--warning-low-s) 60%);
-  --warning-low-foreground: hsl(var(--warning-low-h) 78% 10%);
-  --warning-low-soft: hsl(var(--warning-low-h) 45% 22%);
-  --warning-low-border: hsl(var(--warning-low-h) 70% 44%);
+  --warning-mild: hsl(var(--warning-mild-h) var(--warning-mild-s) 60%);
+  --warning-mild-foreground: hsl(var(--warning-mild-h) 78% 10%);
+  --warning-mild-soft: hsl(var(--warning-mild-h) 45% 22%);
+  --warning-mild-border: hsl(var(--warning-mild-h) 70% 44%);
 
-  --warning-high: hsl(var(--warning-high-h) var(--warning-high-s) 62%);
-  --warning-high-foreground: hsl(var(--warning-high-h) 78% 10%);
-  --warning-high-soft: hsl(var(--warning-high-h) 46% 22%);
-  --warning-high-border: hsl(var(--warning-high-h) 70% 45%);
+  --warning-severe: hsl(var(--warning-severe-h) var(--warning-severe-s) 62%);
+  --warning-severe-foreground: hsl(var(--warning-severe-h) 78% 10%);
+  --warning-severe-soft: hsl(var(--warning-severe-h) 46% 22%);
+  --warning-severe-border: hsl(var(--warning-severe-h) 70% 45%);
 
   --critical: hsl(var(--critical-h) var(--critical-s) 64%);
   --critical-foreground: hsl(var(--critical-h) 85% 10%);
@@ -256,6 +275,18 @@ code {
   --success-foreground: hsl(var(--success-h) 84% 10%);
   --success-soft: hsl(var(--success-h) 44% 22%);
   --success-border: hsl(var(--success-h) 62% 44%);
+
+  --warning-mild-subtle: hsl(var(--warning-mild-h) 36% 25%);
+  --warning-mild-subtle-border: hsl(var(--warning-mild-h) 62% 52%);
+  --warning-mild-subtle-foreground: hsl(var(--warning-mild-h) 92% 82%);
+
+  --warning-severe-subtle: hsl(var(--warning-severe-h) 36% 25%);
+  --warning-severe-subtle-border: hsl(var(--warning-severe-h) 64% 51%);
+  --warning-severe-subtle-foreground: hsl(var(--warning-severe-h) 92% 84%);
+
+  --success-subtle: hsl(var(--success-h) 30% 25%);
+  --success-subtle-border: hsl(var(--success-h) 46% 50%);
+  --success-subtle-foreground: hsl(var(--success-h) 68% 84%);
 
   --info: hsl(var(--info-h) var(--info-s) 59%);
   --info-foreground: hsl(var(--info-h) 84% 10%);
@@ -323,14 +354,14 @@ code {
   --color-card: var(--card);
   --color-foreground: var(--foreground);
   --color-background: var(--background);
-  --color-warning-low: var(--warning-low);
-  --color-warning-low-foreground: var(--warning-low-foreground);
-  --color-warning-low-soft: var(--warning-low-soft);
-  --color-warning-low-border: var(--warning-low-border);
-  --color-warning-high: var(--warning-high);
-  --color-warning-high-foreground: var(--warning-high-foreground);
-  --color-warning-high-soft: var(--warning-high-soft);
-  --color-warning-high-border: var(--warning-high-border);
+  --color-warning-mild: var(--warning-mild);
+  --color-warning-mild-foreground: var(--warning-mild-foreground);
+  --color-warning-mild-soft: var(--warning-mild-soft);
+  --color-warning-mild-border: var(--warning-mild-border);
+  --color-warning-severe: var(--warning-severe);
+  --color-warning-severe-foreground: var(--warning-severe-foreground);
+  --color-warning-severe-soft: var(--warning-severe-soft);
+  --color-warning-severe-border: var(--warning-severe-border);
   --color-critical: var(--critical);
   --color-critical-foreground: var(--critical-foreground);
   --color-critical-soft: var(--critical-soft);
@@ -339,6 +370,15 @@ code {
   --color-success-foreground: var(--success-foreground);
   --color-success-soft: var(--success-soft);
   --color-success-border: var(--success-border);
+  --color-warning-mild-subtle: var(--warning-mild-subtle);
+  --color-warning-mild-subtle-border: var(--warning-mild-subtle-border);
+  --color-warning-mild-subtle-foreground: var(--warning-mild-subtle-foreground);
+  --color-warning-severe-subtle: var(--warning-severe-subtle);
+  --color-warning-severe-subtle-border: var(--warning-severe-subtle-border);
+  --color-warning-severe-subtle-foreground: var(--warning-severe-subtle-foreground);
+  --color-success-subtle: var(--success-subtle);
+  --color-success-subtle-border: var(--success-subtle-border);
+  --color-success-subtle-foreground: var(--success-subtle-foreground);
   --color-info: var(--info);
   --color-info-foreground: var(--info-foreground);
   --color-info-soft: var(--info-soft);
