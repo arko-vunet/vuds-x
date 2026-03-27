@@ -7,23 +7,28 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 64px clamp(24px, 6vw, 96px);
+  padding: 48px clamp(20px, 5vw, 64px);
   box-sizing: border-box;
-  background: #f2f3f4;
+  background: #ffffff;
   color: var(--text-primary);
   font-family: "IBM Plex Sans", system-ui, sans-serif;
+}
+
+.landing-shell {
+  display: grid;
+  width: fit-content;
+  justify-items: stretch;
 }
 
 .brand-block {
   display: flex;
   align-items: center;
-  gap: clamp(24px, 4vw, 44px);
-  max-width: 980px;
+  gap: clamp(14px, 1.8vw, 22px);
   width: fit-content;
 }
 
 .brand-mark {
-  width: clamp(108px, 14vw, 168px);
+  width: clamp(74px, 8vw, 98px);
   height: auto;
   flex-shrink: 0;
 }
@@ -37,20 +42,35 @@
 .brand-title {
   margin: 0;
   font-family: "IBM Plex Sans", system-ui, sans-serif;
-  font-size: clamp(44px, 10vw, 96px);
+  font-size: clamp(22px, 4.2vw, 50px);
   font-weight: 700;
-  line-height: 0.94;
+  line-height: 0.96;
   letter-spacing: -0.04em;
   color: var(--text-primary);
 }
 
 .brand-subtitle {
   margin: 0;
-  font-size: clamp(20px, 3.9vw, 66px);
+  font-size: clamp(14px, 2.2vw, 34px);
   font-weight: 400;
-  line-height: 1.05;
+  line-height: 1.08;
   letter-spacing: -0.02em;
   color: var(--text-secondary);
+}
+
+.landing-divider {
+  width: 100%;
+  margin: clamp(16px, 2.5vw, 24px) 0 0;
+  border: 0;
+  border-top: 1px solid color-mix(in oklab, var(--text-secondary) 22%, white);
+}
+
+.landing-actions {
+  width: 100%;
+  margin-top: clamp(16px, 2.5vw, 24px);
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
 }
 
 @media (max-width: 768px) {
@@ -65,7 +85,15 @@
     text-align: center;
   }
 
+  .landing-shell {
+    width: min(100%, 760px);
+  }
+
   .brand-copy {
     gap: 10px;
+  }
+
+  .landing-actions {
+    justify-content: center;
   }
 }

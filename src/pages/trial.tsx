@@ -1,8 +1,41 @@
-import { useEffect } from "react"
-import { Button } from "@/components/ui/button"
-import { Badge } from "@/components/ui/badge"
-import { Spinner } from "@/components/ui/spinner"
-import { ArrowUpRight, BadgeCheck, Mail, Plus, Trash2 } from "lucide-react"
+import { useEffect, useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import {
+  ButtonGroup,
+} from "@/components/ui/button-group";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuRadioGroup,
+  DropdownMenuRadioItem,
+  DropdownMenuSeparator,
+  DropdownMenuSub,
+  DropdownMenuSubContent,
+  DropdownMenuSubTrigger,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Spinner } from "@/components/ui/spinner";
+import {
+  ArrowUpRight,
+  BadgeCheck,
+  Mail,
+  Plus,
+  Trash2,
+  ArchiveIcon,
+  ArrowLeftIcon,
+  CalendarPlusIcon,
+  ClockIcon,
+  ListFilterIcon,
+  MailCheckIcon,
+  MoreHorizontalIcon,
+  TagIcon,
+  Trash2Icon,
+  MinusIcon,
+  PlusIcon,
+} from "lucide-react";
 
 const variants = [
   "default",
@@ -11,22 +44,30 @@ const variants = [
   "secondary",
   "ghost",
   "link",
-] as const
-const badgeVariants = ["default", "secondary", "destructive", "outline", "ghost"] as const
+] as const;
+const badgeVariants = [
+  "default",
+  "secondary",
+  "destructive",
+  "outline",
+  "ghost",
+] as const;
 
 function toTitleCase(value: string) {
-  return value.charAt(0).toUpperCase() + value.slice(1)
+  return value.charAt(0).toUpperCase() + value.slice(1);
 }
 
 export default function TrialPage() {
+  const [label, setLabel] = useState("personal");
+
   useEffect(() => {
-    const previousTitle = document.title
-    document.title = "Trial | vuDS-x"
+    const previousTitle = document.title;
+    document.title = "Trial | vuDS-x";
 
     return () => {
-      document.title = previousTitle || "vuDS-x"
-    }
-  }, [])
+      document.title = previousTitle || "vuDS-x";
+    };
+  }, []);
 
   return (
     <main
@@ -56,7 +97,14 @@ export default function TrialPage() {
 
         <div style={{ display: "grid", gap: "0.75rem" }}>
           <h2>Button Sizes</h2>
-          <div style={{ display: "flex", gap: "0.75rem", flexWrap: "wrap", alignItems: "center" }}>
+          <div
+            style={{
+              display: "flex",
+              gap: "0.75rem",
+              flexWrap: "wrap",
+              alignItems: "center",
+            }}
+          >
             <Button size="sm">Small</Button>
             <Button size="default">Default</Button>
             <Button size="lg">Large</Button>
@@ -108,7 +156,11 @@ export default function TrialPage() {
             </Button>
           </div>
           <div style={{ display: "flex", gap: "0.75rem", flexWrap: "wrap" }}>
-            <Button size="icon" loading aria-label="Loading default icon button">
+            <Button
+              size="icon"
+              loading
+              aria-label="Loading default icon button"
+            >
               <Plus />
             </Button>
             <Button
@@ -119,7 +171,12 @@ export default function TrialPage() {
             >
               <Plus />
             </Button>
-            <Button size="icon" variant="outline" loading aria-label="Loading outline icon button">
+            <Button
+              size="icon"
+              variant="outline"
+              loading
+              aria-label="Loading outline icon button"
+            >
               <Mail />
             </Button>
             <Button
@@ -130,7 +187,12 @@ export default function TrialPage() {
             >
               <Plus />
             </Button>
-            <Button size="icon" variant="ghost" loading aria-label="Loading ghost icon button">
+            <Button
+              size="icon"
+              variant="ghost"
+              loading
+              aria-label="Loading ghost icon button"
+            >
               <Mail />
             </Button>
           </div>
@@ -160,7 +222,11 @@ export default function TrialPage() {
             <Button size="icon" aria-label="Add item">
               <Plus />
             </Button>
-            <Button size="icon" variant="secondary" aria-label="Add item secondary">
+            <Button
+              size="icon"
+              variant="secondary"
+              aria-label="Add item secondary"
+            >
               <Plus />
             </Button>
             <Button size="icon" variant="destructive" aria-label="Delete item">
@@ -178,8 +244,136 @@ export default function TrialPage() {
         <hr />
 
         <div style={{ display: "grid", gap: "0.75rem" }}>
+          <h2>Button Group</h2>
+          <div
+            style={{
+              display: "flex",
+              gap: "0.75rem",
+              flexWrap: "wrap",
+              alignItems: "center",
+            }}
+          >
+            <ButtonGroup aria-label="Archive actions">
+              <Button variant="outline">Archive</Button>
+              <Button variant="outline">Report</Button>
+              <Button variant="outline">Snooze</Button>
+            </ButtonGroup>
+          </div>
+        </div>
+
+        <div style={{ display: "grid", gap: "0.75rem" }}>
+          <h2>Vertical Button Group</h2>
+          <ButtonGroup
+            orientation="vertical"
+            aria-label="Media controls"
+            className="h-fit"
+          >
+            <Button variant="outline" size="icon">
+              <PlusIcon />
+            </Button>
+            <Button variant="outline" size="icon">
+              <MinusIcon />
+            </Button>
+          </ButtonGroup>
+        </div>
+
+        <div style={{ display: "grid", gap: "0.75rem" }}>
+          <h2>Complex Button Group</h2>
+          <ButtonGroup aria-label="Complex button group">
+            <ButtonGroup className="hidden sm:flex">
+              <Button variant="outline" size="icon" aria-label="Go Back">
+                <ArrowLeftIcon />
+              </Button>
+            </ButtonGroup>
+            <ButtonGroup>
+              <Button variant="outline">Archive</Button>
+              <Button variant="outline">Report</Button>
+            </ButtonGroup>
+            <ButtonGroup>
+              <Button variant="outline">Snooze</Button>
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button
+                    variant="outline"
+                    size="icon"
+                    aria-label="More Options"
+                  >
+                    <MoreHorizontalIcon />
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end" className="w-40">
+                  <DropdownMenuGroup>
+                    <DropdownMenuItem>
+                      <MailCheckIcon />
+                      Mark as Read
+                    </DropdownMenuItem>
+                    <DropdownMenuItem>
+                      <ArchiveIcon />
+                      Archive
+                    </DropdownMenuItem>
+                  </DropdownMenuGroup>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuGroup>
+                    <DropdownMenuItem>
+                      <ClockIcon />
+                      Snooze
+                    </DropdownMenuItem>
+                    <DropdownMenuItem>
+                      <CalendarPlusIcon />
+                      Add to Calendar
+                    </DropdownMenuItem>
+                    <DropdownMenuItem>
+                      <ListFilterIcon />
+                      Add to List
+                    </DropdownMenuItem>
+                    <DropdownMenuSub>
+                      <DropdownMenuSubTrigger>
+                        <TagIcon />
+                        Label As...
+                      </DropdownMenuSubTrigger>
+                      <DropdownMenuSubContent>
+                        <DropdownMenuRadioGroup
+                          value={label}
+                          onValueChange={setLabel}
+                        >
+                          <DropdownMenuRadioItem value="personal">
+                            Personal
+                          </DropdownMenuRadioItem>
+                          <DropdownMenuRadioItem value="work">
+                            Work
+                          </DropdownMenuRadioItem>
+                          <DropdownMenuRadioItem value="other">
+                            Other
+                          </DropdownMenuRadioItem>
+                        </DropdownMenuRadioGroup>
+                      </DropdownMenuSubContent>
+                    </DropdownMenuSub>
+                  </DropdownMenuGroup>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuGroup>
+                    <DropdownMenuItem variant="destructive">
+                      <Trash2Icon />
+                      Trash
+                    </DropdownMenuItem>
+                  </DropdownMenuGroup>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </ButtonGroup>
+          </ButtonGroup>
+        </div>
+
+        <hr />
+
+        <div style={{ display: "grid", gap: "0.75rem" }}>
           <h2>Badge Variants</h2>
-          <div style={{ display: "flex", gap: "0.75rem", flexWrap: "wrap", alignItems: "center" }}>
+          <div
+            style={{
+              display: "flex",
+              gap: "0.75rem",
+              flexWrap: "wrap",
+              alignItems: "center",
+            }}
+          >
             {badgeVariants.map((variant) => (
               <Badge key={variant} variant={variant}>
                 {toTitleCase(variant)}
@@ -190,7 +384,14 @@ export default function TrialPage() {
 
         <div style={{ display: "grid", gap: "0.75rem" }}>
           <h2>Badge with Icon</h2>
-          <div style={{ display: "flex", gap: "0.75rem", flexWrap: "wrap", alignItems: "center" }}>
+          <div
+            style={{
+              display: "flex",
+              gap: "0.75rem",
+              flexWrap: "wrap",
+              alignItems: "center",
+            }}
+          >
             <Badge>
               <BadgeCheck data-icon="inline-start" />
               Verified
@@ -204,7 +405,14 @@ export default function TrialPage() {
 
         <div style={{ display: "grid", gap: "0.75rem" }}>
           <h2>Badge with Spinner</h2>
-          <div style={{ display: "flex", gap: "0.75rem", flexWrap: "wrap", alignItems: "center" }}>
+          <div
+            style={{
+              display: "flex",
+              gap: "0.75rem",
+              flexWrap: "wrap",
+              alignItems: "center",
+            }}
+          >
             <Badge variant="secondary">
               <Spinner data-icon="inline-start" className="size-3" />
               Generating
@@ -218,9 +426,20 @@ export default function TrialPage() {
 
         <div style={{ display: "grid", gap: "0.75rem" }}>
           <h2>Badge as Link</h2>
-          <div style={{ display: "flex", gap: "0.75rem", flexWrap: "wrap", alignItems: "center" }}>
+          <div
+            style={{
+              display: "flex",
+              gap: "0.75rem",
+              flexWrap: "wrap",
+              alignItems: "center",
+            }}
+          >
             <Badge asChild variant="outline">
-              <a href="https://ui.shadcn.com/docs/components/radix/badge" target="_blank" rel="noreferrer">
+              <a
+                href="https://ui.shadcn.com/docs/components/radix/badge"
+                target="_blank"
+                rel="noreferrer"
+              >
                 Docs
                 <ArrowUpRight />
               </a>
@@ -233,8 +452,7 @@ export default function TrialPage() {
             </Badge>
           </div>
         </div>
-
       </section>
     </main>
-  )
+  );
 }

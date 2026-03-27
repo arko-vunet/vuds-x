@@ -2,6 +2,41 @@
 
 Canonical record of local shadcn customizations for team rollout.
 
+## 2026-03-27
+
+Scope: Button Group and Dropdown Menu primitives, plus trial page demos.
+
+### Button Group Component
+
+- Added `src/components/ui/button-group.tsx`.
+- Introduced `ButtonGroup`, `ButtonGroupSeparator`, and `ButtonGroupText` primitives.
+- Added orientation support (`horizontal` and `vertical`) with `role="group"` and `data-slot` attributes.
+- Implemented grouped-control styling behavior so adjacent buttons collapse borders and share edge rounding, matching shadcn grouped layouts.
+- Added nested group spacing rules so complex groups (multiple inner `ButtonGroup` blocks) align like the docs patterns.
+
+### Dropdown Menu Component
+
+- Added `src/components/ui/dropdown-menu.tsx`.
+- Introduced a full shadcn-style Radix wrapper with:
+  - `DropdownMenu`, `DropdownMenuTrigger`, `DropdownMenuContent`
+  - `DropdownMenuGroup`, `DropdownMenuItem`, `DropdownMenuSeparator`
+  - `DropdownMenuSub`, `DropdownMenuSubTrigger`, `DropdownMenuSubContent`
+  - `DropdownMenuRadioGroup`, `DropdownMenuRadioItem`
+  - plus `DropdownMenuCheckboxItem`, `DropdownMenuLabel`, `DropdownMenuShortcut`, `DropdownMenuPortal`.
+- Added item variants support (`default`, `destructive`) so destructive actions can be styled in menus.
+
+### Trial Page
+
+- Source: `src/pages/trial.tsx`.
+- Added Button Group demo coverage:
+  - base horizontal group
+  - vertical group
+  - text + button group
+  - complex grouped layout with nested dropdown interactions and radio submenu state.
+- Updated section separators so `<hr />` appears only at major section boundaries:
+  - between button demos and button-group demos
+  - between button-group demos and badge demos.
+
 ## 2026-03-26
 
 Scope: Button, Tooltip, and core design-token definitions.
