@@ -149,6 +149,13 @@
 
   --radius: 0.703125rem;
 
+  /*
+   * Single-line field width (names, email, short text). Caps inputs in wide rows so
+   * fields stay readable; in grid columns the field still fills the cell up to this cap.
+   * Long copy belongs in textarea (separate max later). Override per Field: max-w-none / max-w-md.
+   */
+  --field-input-max-width: 24rem;
+
   --sidebar: var(--neutral-50);
   --sidebar-foreground: var(--neutral-900);
   --sidebar-primary: var(--primary);

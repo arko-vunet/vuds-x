@@ -2,6 +2,78 @@
 
 Canonical record of local shadcn customizations for team rollout.
 
+## 2026-04-16
+
+Scope: Form-field composition rollout (`Field` + `Input`) and button disabled-state polish, with expanded trial page coverage.
+
+### Field Component
+
+- Added `src/components/ui/field.tsx`.
+- Introduced form-composition primitives:
+  - `Field`, `FieldLabel`, `FieldDescription`, `FieldError`
+  - `FieldGroup`, `FieldSet`, `FieldLegend`, `FieldSeparator`, `FieldContent`, `FieldTitle`.
+- Added shared `required` context on `Field` so:
+  - `FieldLabel` can show a required asterisk indicator (`*`) automatically.
+  - `FieldLabel` can opt out via `hideRequiredIndicator`.
+- Added prop-driven label help affordance on `FieldLabel`:
+  - `info` renders inline info icon with tooltip content.
+  - `infoAriaLabel` customizes icon trigger accessible label.
+  - Space between label cluster (`label` + optional `*`) and info icon is `gap-1` (4px).
+- Tightened required-indicator spacing in `FieldLabel` from `gap-2` (8px) to `gap-0.5` (2px) for closer label-to-asterisk alignment.
+- Added orientation variants for `Field` (`vertical`, `horizontal`, `responsive`) and field-group container rules for mixed layouts.
+- Updated field vertical rhythm to better separate hierarchy levels:
+  - tighter within a field (`Field` internal gap reduced to `gap-1` (4px), description nudged with `mt-0.5`)
+  - wider between sibling fields (`FieldGroup` default spacing increased).
+- Updated invalid-state messaging color behavior:
+  - `FieldDescription` now switches to destructive red when parent `Field` is invalid (`data-invalid=true`) so helper/error copy matches input/error semantics.
+- Added `FieldGroup` spacing variants for form hierarchy:
+  - `spacing="field"` (default): 12px between sibling fields in one logical block.
+  - `spacing="section"`: 24px between major field blocks/groups.
+  - nested direct `FieldGroup` children normalize to 12px internal grouping in both modes.
+- Added `src/components/ui/field-context.ts` to host field context/hook and keep `field.tsx` component-export-only for fast-refresh lint compliance.
+
+### Input Component
+
+- Added `src/components/ui/input.tsx`.
+- Integrated `Input` with field context so native `required` is inherited from parent `Field` unless explicitly overridden per input.
+- Added consistent input visual states for focus, invalid, disabled, and dark mode.
+- Updated input surface fill behavior:
+  - enabled inputs now use transparent background (no default fill)
+  - disabled inputs keep muted fill (`bg-input/20`, dark: `bg-input/30`)
+  - parent disabled field state (`data-disabled=true`) also applies disabled fill for visual consistency.
+- Updated disabled cursor behavior on `Input`:
+  - parent disabled field state (`data-disabled=true`) now applies `cursor-not-allowed` on the input itself.
+  - removed `disabled:pointer-events-none` so cursor feedback is visible on hover over disabled inputs.
+
+### Global Definitions
+
+- Source: `src/index.css`.
+- Added `--field-input-max-width: 24rem` to cap single-line field widths for readability in wide layouts.
+
+### Button Component
+
+- Source: `src/components/ui/button.tsx`.
+- Disabled-state visual polish:
+  - Added `disabled:shadow-none`.
+  - Updated loading cursor treatment to use not-allowed semantics (`cursor-not-allowed`) instead of progress cursor.
+
+### Trial Page
+
+- Source: `src/pages/trial.tsx`.
+- Added dedicated Input demo section with:
+  - basic
+  - field + description
+  - required (asterisk + native required propagation)
+  - field group
+  - disabled
+  - invalid
+  - horizontal inline
+  - fieldset + grouped address inputs.
+- Updated Field Group demo to show nested group hierarchy:
+  - outer `FieldGroup spacing="section"` for block-level separation
+  - inner `FieldGroup` instances for tighter field-level proximity.
+- Added Field Group spacing note in demo (`field 12px`, `section 24px`, `nested group 12px`) to document active scale inline.
+
 ## 2026-03-27
 
 Scope: Alert primitive rollout and semantic color-token refinement, plus Button Group, Dropdown Menu, Checkbox, Radio Group, and Sonner primitives with expanded trial page coverage.

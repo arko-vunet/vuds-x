@@ -23,6 +23,15 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Checkbox } from "@/components/ui/checkbox";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Input } from "@/components/ui/input";
+import {
+  Field,
+  FieldDescription,
+  FieldGroup,
+  FieldLabel,
+  FieldSet,
+  FieldLegend,
+} from "@/components/ui/field";
 import { Spinner } from "@/components/ui/spinner";
 import { toast } from "sonner";
 import {
@@ -73,6 +82,18 @@ function wait(ms: number) {
     window.setTimeout(resolve, ms);
   });
 }
+
+/** Subsection titles under the Input demo (not field labels). */
+const inputDemoSubheadingStyle = {
+  fontSize: "0.875rem",
+  fontWeight: 600,
+  margin: 0,
+} as const;
+
+const inputDemoBlockStyle = {
+  display: "grid" as const,
+  gap: "0.375rem",
+};
 
 export default function TrialPage() {
   const [label, setLabel] = useState("personal");
@@ -256,6 +277,190 @@ export default function TrialPage() {
             <Button size="icon" variant="ghost" aria-label="Mail ghost">
               <Mail />
             </Button>
+          </div>
+        </div>
+
+        <hr />
+
+        <div style={{ display: "grid", gap: "1.5rem" }}>
+          <h2>Input</h2>
+          <div style={inputDemoBlockStyle}>
+            <h3 style={inputDemoSubheadingStyle}>Basic</h3>
+            <Field>
+              <FieldLabel htmlFor="trial-input-basic-email">Email</FieldLabel>
+              <Input
+                id="trial-input-basic-email"
+                type="email"
+                autoComplete="off"
+                placeholder="name@example.com"
+              />
+            </Field>
+          </div>
+
+          <div style={inputDemoBlockStyle}>
+            <h3 style={inputDemoSubheadingStyle}>Field</h3>
+            <Field>
+              <FieldLabel htmlFor="trial-input-username">Username</FieldLabel>
+              <Input
+                id="trial-input-username"
+                autoComplete="off"
+                placeholder="shadcn"
+              />
+              <FieldDescription>
+                Choose a unique username for your account.
+              </FieldDescription>
+            </Field>
+          </div>
+
+          <div style={inputDemoBlockStyle}>
+            <h3 style={inputDemoSubheadingStyle}>Required</h3>
+            <Field required>
+              <FieldLabel htmlFor="trial-input-required">Legal name</FieldLabel>
+              <Input
+                id="trial-input-required"
+                autoComplete="name"
+                placeholder="Ada Lovelace"
+              />
+              <FieldDescription>
+                As shown on your government ID. Required fields are marked with
+                an asterisk.
+              </FieldDescription>
+            </Field>
+          </div>
+
+          <div style={inputDemoBlockStyle}>
+            <h3 style={inputDemoSubheadingStyle}>Required</h3>
+            <Field required>
+              <FieldLabel
+                htmlFor="trial-input-required"
+                info="Use legal name exactly as shown on government ID."
+              >
+                Legal name
+              </FieldLabel>
+              <Input id="trial-input-required" />
+            </Field>
+          </div>
+
+          <div style={inputDemoBlockStyle}>
+            <h3 style={inputDemoSubheadingStyle}>Not Required</h3>
+            <Field>
+              <FieldLabel
+                htmlFor="trial-input-required"
+                info="The info description tooltip can obviously show-up for a non-required field too!"
+              >
+                Some other field
+              </FieldLabel>
+              <Input id="trial-input-required" />
+            </Field>
+          </div>
+
+          <div style={inputDemoBlockStyle}>
+            <h3 style={inputDemoSubheadingStyle}>Field Group</h3>
+            <p className="text-xs text-muted-foreground">
+              Spacing scale: field 12px, section 24px, nested group 12px.
+            </p>
+            <FieldGroup spacing="section">
+              <FieldGroup>
+                <Field>
+                  <FieldLabel htmlFor="trial-input-name">Name</FieldLabel>
+                  <Input id="trial-input-name" autoComplete="off" />
+                </Field>
+                <Field>
+                  <FieldLabel htmlFor="trial-input-email">Email</FieldLabel>
+                  <Input id="trial-input-email" type="email" autoComplete="off" />
+                  <FieldDescription>
+                    We&apos;ll send updates to this address.
+                  </FieldDescription>
+                </Field>
+              </FieldGroup>
+              <FieldGroup>
+                <Field>
+                  <FieldLabel htmlFor="trial-input-company">Company</FieldLabel>
+                  <Input id="trial-input-company" autoComplete="organization" />
+                </Field>
+                <Field>
+                  <FieldLabel htmlFor="trial-input-role">Role</FieldLabel>
+                  <Input id="trial-input-role" autoComplete="organization-title" />
+                </Field>
+              </FieldGroup>
+              <div className="flex gap-2">
+                <Button type="reset" variant="outline">
+                  Reset
+                </Button>
+                <Button type="submit">Submit</Button>
+              </div>
+            </FieldGroup>
+          </div>
+
+          <div style={inputDemoBlockStyle}>
+            <h3 style={inputDemoSubheadingStyle}>Disabled</h3>
+            <Field data-disabled={true}>
+              <FieldLabel htmlFor="trial-input-email-disabled">
+                Email
+              </FieldLabel>
+              <Input id="trial-input-email-disabled" disabled />
+              <FieldDescription>
+                This field is currently disabled.
+              </FieldDescription>
+            </Field>
+          </div>
+
+          <div style={inputDemoBlockStyle}>
+            <h3 style={inputDemoSubheadingStyle}>Invalid</h3>
+            <Field data-invalid={true}>
+              <FieldLabel htmlFor="trial-input-invalid">
+                Invalid Input
+              </FieldLabel>
+              <Input id="trial-input-invalid" aria-invalid />
+              <FieldDescription>
+                This field contains validation errors.
+              </FieldDescription>
+            </Field>
+          </div>
+
+          <div style={inputDemoBlockStyle}>
+            <h3 style={inputDemoSubheadingStyle}>Inline</h3>
+            <Field orientation="horizontal">
+              <FieldLabel htmlFor="trial-input-search">Search</FieldLabel>
+              <Input id="trial-input-search" placeholder="Search…" />
+              <Button type="button">Search</Button>
+            </Field>
+          </div>
+
+          <div style={inputDemoBlockStyle}>
+            <h3 style={inputDemoSubheadingStyle}>Fieldset</h3>
+            <FieldSet>
+              <FieldLegend>Address Information</FieldLegend>
+              <FieldDescription>
+                We need your address to deliver your order.
+              </FieldDescription>
+              <FieldGroup>
+                <Field>
+                  <FieldLabel htmlFor="trial-input-street">
+                    Street Address
+                  </FieldLabel>
+                  <Input
+                    id="trial-input-street"
+                    autoComplete="street-address"
+                  />
+                </Field>
+                <div className="grid gap-4 sm:grid-cols-2">
+                  <Field>
+                    <FieldLabel htmlFor="trial-input-city">City</FieldLabel>
+                    <Input
+                      id="trial-input-city"
+                      autoComplete="address-level2"
+                    />
+                  </Field>
+                  <Field>
+                    <FieldLabel htmlFor="trial-input-postal">
+                      Postal Code
+                    </FieldLabel>
+                    <Input id="trial-input-postal" autoComplete="postal-code" />
+                  </Field>
+                </div>
+              </FieldGroup>
+            </FieldSet>
           </div>
         </div>
 
