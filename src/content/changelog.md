@@ -2,6 +2,17 @@
 
 Canonical record of local shadcn customizations for team rollout.
 
+## 2026-04-29
+
+Scope: Skills ledger page for agent skills, AI tooling, and external sources used during repo creation and maintenance.
+
+### Skills Page
+
+- Added markdown content source at `src/content/skills.md`.
+- Added `/skills` route via `src/pages/skills.tsx`.
+- Added shared markdown renderer at `src/components/markdown-content-page.tsx` and moved Changelog rendering to it.
+- Added Skills links on the landing page and trial badge link area.
+
 ## 2026-04-16
 
 Scope: Form-field composition rollout (`Field` + `Input`) and button disabled-state polish, with expanded trial page coverage.

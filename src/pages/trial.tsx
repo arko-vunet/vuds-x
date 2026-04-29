@@ -673,6 +673,12 @@ export default function TrialPage() {
                 <ArrowUpRight />
               </a>
             </Badge>
+            <Badge asChild variant="link">
+              <a href="/skills">
+                Skills
+                <ArrowUpRight />
+              </a>
+            </Badge>
           </div>
         </div>
 

@@ -32,6 +32,9 @@ function App() {
           <Button asChild variant="outline">
             <Link to="/changelog">Changelog</Link>
           </Button>
+          <Button asChild variant="outline">
+            <Link to="/skills">Skills</Link>
+          </Button>
         </nav>
       </div>
     </main>
