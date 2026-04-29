@@ -9,6 +9,10 @@ import {
 } from "@/components/ui/alert";
 import { ButtonGroup } from "@/components/ui/button-group";
 import {
+  DataTable,
+  type DataTableFilterChip,
+} from "@/components/ui/data-table";
+import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuGroup,
@@ -34,6 +38,12 @@ import {
 } from "@/components/ui/field";
 import { Spinner } from "@/components/ui/spinner";
 import { toast } from "sonner";
+import type {
+  ColumnDef,
+  ColumnFiltersState,
+  Row,
+  RowSelectionState,
+} from "@tanstack/react-table";
 import {
   ArrowUpRight,
   BadgeCheck,
@@ -55,6 +65,7 @@ import {
   Trash2Icon,
   MinusIcon,
   PlusIcon,
+  DownloadIcon,
 } from "lucide-react";
 
 const variants = [
@@ -83,6 +94,252 @@ function wait(ms: number) {
   });
 }
 
+type Transaction = {
+  id: string;
+  merchant: string;
+  amount: number;
+  currency: string;
+  status: "Needs review" | "Ready to sync" | "Flagged" | "Cleared";
+  risk: "Low" | "Medium" | "High";
+  owner: string;
+  category: string;
+  occurredAt: string;
+};
+
+const transactionData: Transaction[] = [
+  {
+    id: "txn_101",
+    merchant: "AWS Marketplace",
+    amount: 1840.42,
+    currency: "USD",
+    status: "Needs review",
+    risk: "High",
+    owner: "Platform",
+    category: "Cloud infra",
+    occurredAt: "2026-04-28",
+  },
+  {
+    id: "txn_102",
+    merchant: "Figma",
+    amount: 312.0,
+    currency: "USD",
+    status: "Ready to sync",
+    risk: "Low",
+    owner: "Design",
+    category: "Software",
+    occurredAt: "2026-04-27",
+  },
+  {
+    id: "txn_103",
+    merchant: "Datadog",
+    amount: 967.18,
+    currency: "USD",
+    status: "Needs review",
+    risk: "Medium",
+    owner: "SRE",
+    category: "Monitoring",
+    occurredAt: "2026-04-26",
+  },
+  {
+    id: "txn_104",
+    merchant: "Unknown merchant",
+    amount: 229.99,
+    currency: "USD",
+    status: "Flagged",
+    risk: "High",
+    owner: "Finance",
+    category: "Unmapped",
+    occurredAt: "2026-04-25",
+  },
+  {
+    id: "txn_105",
+    merchant: "Linear",
+    amount: 96.0,
+    currency: "USD",
+    status: "Cleared",
+    risk: "Low",
+    owner: "Product",
+    category: "Software",
+    occurredAt: "2026-04-24",
+  },
+  {
+    id: "txn_106",
+    merchant: "OpenAI",
+    amount: 1260.75,
+    currency: "USD",
+    status: "Needs review",
+    risk: "Medium",
+    owner: "AI Lab",
+    category: "Model usage",
+    occurredAt: "2026-04-23",
+  },
+  {
+    id: "txn_107",
+    merchant: "GitHub",
+    amount: 448.0,
+    currency: "USD",
+    status: "Ready to sync",
+    risk: "Low",
+    owner: "Engineering",
+    category: "Developer tools",
+    occurredAt: "2026-04-22",
+  },
+  {
+    id: "txn_108",
+    merchant: "Vercel",
+    amount: 518.2,
+    currency: "USD",
+    status: "Flagged",
+    risk: "High",
+    owner: "Growth",
+    category: "Hosting",
+    occurredAt: "2026-04-21",
+  },
+];
+
+const currencyFormatter = new Intl.NumberFormat("en-US", {
+  style: "currency",
+  currency: "USD",
+});
+
+const dateFormatter = new Intl.DateTimeFormat("en-US", {
+  month: "short",
+  day: "numeric",
+  year: "numeric",
+});
+
+function includesAnyFilter<TData>(
+  row: Row<TData>,
+  columnId: string,
+  filterValue: unknown
+) {
+  if (!Array.isArray(filterValue) || filterValue.length === 0) {
+    return true;
+  }
+
+  return filterValue.includes(row.getValue(columnId));
+}
+
+function getColumnFilterValues(filters: ColumnFiltersState, id: string) {
+  const value = filters.find((filter) => filter.id === id)?.value;
+
+  if (!Array.isArray(value)) {
+    return [];
+  }
+
+  return value.filter((item): item is string => typeof item === "string");
+}
+
+function setColumnFilterValues(
+  filters: ColumnFiltersState,
+  id: string,
+  values: string[]
+) {
+  const withoutFilter = filters.filter((filter) => filter.id !== id);
+
+  if (values.length === 0) {
+    return withoutFilter;
+  }
+
+  return [...withoutFilter, { id, value: values }];
+}
+
+const transactionColumns: ColumnDef<Transaction, unknown>[] = [
+  {
+    accessorKey: "merchant",
+    header: "Merchant",
+    meta: {
+      label: "Merchant",
+      truncate: true,
+    },
+    cell: ({ row }) => (
+      <div className="grid gap-0.5">
+        <span className="font-medium text-foreground">
+          {row.original.merchant}
+        </span>
+        <span className="font-mono text-[11px] text-muted-foreground">
+          {row.original.id}
+        </span>
+      </div>
+    ),
+  },
+  {
+    accessorKey: "amount",
+    header: "Amount",
+    meta: {
+      isNumeric: true,
+      label: "Amount",
+    },
+    cell: ({ row }) => currencyFormatter.format(row.original.amount),
+  },
+  {
+    accessorKey: "status",
+    header: "Status",
+    filterFn: includesAnyFilter,
+    meta: {
+      label: "Status",
+    },
+    cell: ({ row }) => (
+      <Badge
+        variant={
+          row.original.status === "Flagged"
+            ? "destructive"
+            : row.original.status === "Needs review"
+              ? "outline"
+              : "secondary"
+        }
+      >
+        {row.original.status}
+      </Badge>
+    ),
+  },
+  {
+    accessorKey: "risk",
+    header: "Risk",
+    filterFn: includesAnyFilter,
+    meta: {
+      label: "Risk",
+    },
+    cell: ({ row }) => (
+      <Badge
+        variant={
+          row.original.risk === "High"
+            ? "destructive"
+            : row.original.risk === "Medium"
+              ? "outline"
+              : "ghost"
+        }
+      >
+        {row.original.risk}
+      </Badge>
+    ),
+  },
+  {
+    accessorKey: "owner",
+    header: "Owner",
+    meta: {
+      label: "Owner",
+    },
+  },
+  {
+    accessorKey: "category",
+    header: "Category",
+    meta: {
+      label: "Category",
+      truncate: true,
+    },
+  },
+  {
+    accessorKey: "occurredAt",
+    header: "Date",
+    sortingFn: "datetime",
+    meta: {
+      label: "Date",
+    },
+    cell: ({ row }) => dateFormatter.format(new Date(row.original.occurredAt)),
+  },
+];
+
 /** Subsection titles under the Input demo (not field labels). */
 const inputDemoSubheadingStyle = {
   fontSize: "0.875rem",
@@ -98,6 +355,51 @@ const inputDemoBlockStyle = {
 export default function TrialPage() {
   const [label, setLabel] = useState("personal");
   const [emailUpdatesEnabled, setEmailUpdatesEnabled] = useState(false);
+  const [transactionColumnFilters, setTransactionColumnFilters] =
+    useState<ColumnFiltersState>([
+      { id: "status", value: ["Needs review"] },
+    ]);
+  const [transactionRowSelection, setTransactionRowSelection] =
+    useState<RowSelectionState>({});
+
+  const transactionStatusFilters = getColumnFilterValues(
+    transactionColumnFilters,
+    "status"
+  );
+  const transactionRiskFilters = getColumnFilterValues(
+    transactionColumnFilters,
+    "risk"
+  );
+  const transactionFilterChips: DataTableFilterChip[] = [
+    {
+      id: "status",
+      label: "Status",
+      value: transactionStatusFilters.join(", "),
+      active: transactionStatusFilters.length > 0,
+      onClick: () =>
+        setTransactionColumnFilters((filters) =>
+          setColumnFilterValues(filters, "status", ["Needs review"])
+        ),
+      onClear: () =>
+        setTransactionColumnFilters((filters) =>
+          setColumnFilterValues(filters, "status", [])
+        ),
+    },
+    {
+      id: "risk",
+      label: "Risk",
+      value: transactionRiskFilters.join(", "),
+      active: transactionRiskFilters.length > 0,
+      onClick: () =>
+        setTransactionColumnFilters((filters) =>
+          setColumnFilterValues(filters, "risk", ["High"])
+        ),
+      onClear: () =>
+        setTransactionColumnFilters((filters) =>
+          setColumnFilterValues(filters, "risk", [])
+        ),
+    },
+  ];
 
   useEffect(() => {
     const previousTitle = document.title;
@@ -278,6 +580,113 @@ export default function TrialPage() {
               <Mail />
             </Button>
           </div>
+        </div>
+
+        <hr />
+
+        <div style={{ display: "grid", gap: "0.75rem" }}>
+          <h2>Data Table</h2>
+          <DataTable
+            title="Card transactions"
+            description="Dense finance workflow table with saved-view tabs, filter chips, column control, row selection, and bulk actions."
+            columns={transactionColumns}
+            data={transactionData}
+            density="compact"
+            columnFilters={transactionColumnFilters}
+            rowSelection={transactionRowSelection}
+            onColumnFiltersChange={setTransactionColumnFilters}
+            onRowSelectionChange={setTransactionRowSelection}
+            getRowId={(row) => row.id}
+            filterChips={transactionFilterChips}
+            initialState={{
+              pagination: {
+                pageIndex: 0,
+                pageSize: 5,
+              },
+              sorting: [
+                {
+                  id: "occurredAt",
+                  desc: true,
+                },
+              ],
+            }}
+            searchPlaceholder="Search merchant, owner, category..."
+            querySummary="Updated 90s ago"
+            viewTabs={
+              <ButtonGroup aria-label="Transaction views">
+                <Button
+                  type="button"
+                  size="sm"
+                  variant={
+                    transactionColumnFilters.length === 0
+                      ? "secondary"
+                      : "outline"
+                  }
+                  onClick={() => setTransactionColumnFilters([])}
+                >
+                  All
+                </Button>
+                <Button
+                  type="button"
+                  size="sm"
+                  variant={
+                    transactionStatusFilters.includes("Needs review")
+                      ? "secondary"
+                      : "outline"
+                  }
+                  onClick={() =>
+                    setTransactionColumnFilters((filters) =>
+                      setColumnFilterValues(filters, "status", ["Needs review"])
+                    )
+                  }
+                >
+                  Needs review
+                </Button>
+                <Button
+                  type="button"
+                  size="sm"
+                  variant={
+                    transactionRiskFilters.includes("High")
+                      ? "secondary"
+                      : "outline"
+                  }
+                  onClick={() =>
+                    setTransactionColumnFilters((filters) =>
+                      setColumnFilterValues(filters, "risk", ["High"])
+                    )
+                  }
+                >
+                  High risk
+                </Button>
+              </ButtonGroup>
+            }
+            renderToolbarActions={() => (
+              <Button type="button" variant="outline" size="sm">
+                <DownloadIcon />
+                Export CSV
+              </Button>
+            )}
+            renderBulkActions={() => (
+              <>
+                <Button type="button" variant="outline" size="sm">
+                  Code transactions
+                </Button>
+                <Button type="button" size="sm">
+                  Mark ready
+                </Button>
+              </>
+            )}
+            renderRowActions={(row) => (
+              <Button
+                type="button"
+                variant="ghost"
+                size="sm"
+                aria-label={`Review ${row.original.merchant}`}
+              >
+                Review
+              </Button>
+            )}
+          />
         </div>
 
         <hr />

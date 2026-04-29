@@ -6,6 +6,17 @@ Canonical record of local shadcn customizations for team rollout.
 
 Scope: Skills ledger page for agent skills, AI tooling, and external sources used during repo creation and maintenance.
 
+### Data Table Component
+
+- Added `src/components/ui/data-table.tsx` using `@tanstack/react-table`.
+- Added code-local product notes documenting the current fintech/enterprise table stance:
+  - visible query state
+  - explicit selection scope
+  - numeric alignment and tabular figures
+  - client/server row-model split
+  - prop-gated add-on surface for later table features.
+- Added a transaction-review demo to `src/pages/trial.tsx` with saved-view style buttons, filter chips, column visibility, row selection, bulk actions, export action, and dense pagination.
+
 ### Skills Page
 
 - Added markdown content source at `src/content/skills.md`.
