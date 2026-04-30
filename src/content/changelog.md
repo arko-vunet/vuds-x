@@ -2,6 +2,163 @@
 
 Canonical record of local shadcn customizations for team rollout.
 
+## 2026-04-30
+
+Scope: Surface, layering, and form-control primitive rollout — Card, Skeleton, Avatar, Switch, Progress, Slider, Toggle, Toggle Group, Scroll Area, Accordion, Tabs, Popover, Select, Dialog, Sheet, and Command/Combobox.
+
+### New Component Dependencies
+
+- Added project dependencies: `@radix-ui/react-accordion`, `@radix-ui/react-avatar`, `@radix-ui/react-dialog`, `@radix-ui/react-popover`, `@radix-ui/react-progress`, `@radix-ui/react-scroll-area`, `@radix-ui/react-select`, `@radix-ui/react-slider`, `@radix-ui/react-switch`, `@radix-ui/react-tabs`, `@radix-ui/react-toggle`, `@radix-ui/react-toggle-group`, and `cmdk`.
+
+### Card Component
+
+- Added `src/components/ui/card.tsx`.
+- Introduced `Card`, `CardHeader`, `CardTitle`, `CardDescription`, `CardAction`, `CardContent`, `CardFooter`.
+- Surface uses `bg-card` / `text-card-foreground` with a `rounded-lg` corner to match the larger-surface scale set by `--radius-lg`.
+- Default elevation uses `shadow-xs` so cards sit on the page without competing with focused controls.
+- `CardHeader` supports an optional `CardAction` slot via container query (`grid-cols-[1fr_auto]` only when an action is present), so action-less headers stay left-aligned without extra columns.
+- `CardFooter` collapses border padding when the parent or footer adds `border-t`, matching the same pattern used inside `Field` and `Alert`.
+
+### Skeleton Component
+
+- Added `src/components/ui/skeleton.tsx`.
+- Single primitive: `Skeleton` using `bg-muted` and `animate-pulse`, with `rounded-sm` to match the small-control radius scale.
+- Intentionally minimal so callers compose shapes (rectangles, circles, lines) by overriding `className`.
+
+### Avatar Component
+
+- Added `src/components/ui/avatar.tsx` using `@radix-ui/react-avatar` primitives.
+- Introduced `Avatar`, `AvatarImage`, `AvatarFallback`.
+- Default size is `size-8` (32px) so avatars align visually with `Button` `default`/`icon` controls.
+- Fallback uses `bg-muted` / `text-muted-foreground` and `text-xs font-medium` for consistent initials styling.
+
+### Switch Component
+
+- Added `src/components/ui/switch.tsx` using `@radix-ui/react-switch` primitives.
+- Track sized 30×18 with a 14px thumb so it reads as a control distinct from `Checkbox` (square, 16px).
+- States:
+  - `checked`: `bg-primary` track.
+  - `unchecked`: `bg-input` track in light, `bg-input/60` in dark for clearer affordance against the page background.
+- Focus ring follows the shared 3-px ring pattern used on `Button` and `Checkbox` (`focus-visible:ring-ring/50 focus-visible:ring-[3px]`).
+
+### Progress Component
+
+- Added `src/components/ui/progress.tsx` using `@radix-ui/react-progress` primitives.
+- Track height is `h-1.5` (6px), track color `bg-muted`, fill `bg-primary`.
+- Indicator animates via `transform: translateX` with a `transition-transform` so values change smoothly in place.
+
+### Slider Component
+
+- Added `src/components/ui/slider.tsx` using `@radix-ui/react-slider` primitives.
+- Supports horizontal and vertical orientation via `data-[orientation=*]` styling on track/range.
+- Multiple thumbs supported by deriving thumb count from `value`/`defaultValue`.
+- Thumb visuals:
+  - 16px circle with `border-2 border-primary` and `bg-background` for clear contrast on both light and dark themes.
+  - hover halo via `hover:ring-primary/20 hover:ring-4`.
+  - focus ring uses the same 3-px ring style as `Button` for consistency.
+- Disabled track + thumbs use `data-[disabled]:opacity-50 data-[disabled]:cursor-not-allowed`, matching disabled affordance across the system.
+
+### Toggle Component
+
+- Added `src/components/ui/toggle.tsx` using `@radix-ui/react-toggle` primitives.
+- Variants: `default` (transparent ground) and `outline` (border + shadow), aligned with `Button` outline visuals.
+- Sizes match `Button` heights so toggles can sit alongside buttons in a row without alignment drift: `default` 32px, `sm` 24px, `lg` 40px.
+- On state uses `bg-accent` / `text-accent-foreground` instead of `bg-primary` so toggles read as “active” without competing with primary CTAs.
+
+### Toggle Group Component
+
+- Added `src/components/ui/toggle-group.tsx` using `@radix-ui/react-toggle-group` primitives.
+- Variant + size are propagated from the group to children via React context, so `<ToggleGroupItem />` doesn’t need each variant set explicitly.
+- Adjacent items collapse borders (outline variant) and share edge rounding via `first:rounded-l-sm last:rounded-r-sm` and `data-[variant=outline]:border-l-0 data-[variant=outline]:first:border-l`, matching the grouped-control behavior already established in `ButtonGroup`.
+
+### Scroll Area Component
+
+- Added `src/components/ui/scroll-area.tsx` using `@radix-ui/react-scroll-area` primitives.
+- Exposes `ScrollArea` (root + viewport composed) and a standalone `ScrollBar` for advanced cases.
+- Scrollbar uses `bg-border` thumb on a transparent border-side track for a flush, neutral look against `Card` and `Popover` surfaces.
+- Viewport inherits the parent border radius (`rounded-[inherit]`) so scrollable content respects card corners.
+
+### Accordion Component
+
+- Added `src/components/ui/accordion.tsx` using `@radix-ui/react-accordion` primitives.
+- Items separated with `border-b last:border-b-0` for a quiet visual ladder; no per-item background fill.
+- Trigger uses `hover:underline` (matches the linkish affordance already used by the `link` button variant) and rotates a `ChevronDownIcon` on `data-state=open`.
+- Open/close use newly-added shared keyframes (see Global Definitions below).
+
+### Tabs Component
+
+- Added `src/components/ui/tabs.tsx` using `@radix-ui/react-tabs` primitives.
+- `TabsList` is a 36px-tall pill (`bg-muted`) holding `TabsTrigger` chips, sized for parity with `Button` `sm`.
+- Active trigger surfaces with `bg-background` and `shadow-xs` so the selected state lifts off the muted track.
+- Dark-mode active state uses `bg-input/30` so the active chip stays distinguishable on the dark muted background.
+
+### Popover Component
+
+- Added `src/components/ui/popover.tsx` using `@radix-ui/react-popover` primitives.
+- Surface uses `bg-popover`, `text-popover-foreground`, `border`, `shadow-md`, with the same `data-[state=open]:animate-in` motion pattern already used by `DropdownMenu` and `TooltipContent`.
+- Default `align="center"` and `sideOffset=4` to match how dropdowns offset from triggers.
+
+### Select Component
+
+- Added `src/components/ui/select.tsx` using `@radix-ui/react-select` primitives.
+- Trigger geometry matches `Input`: `rounded-sm`, 32px default height, with a `data-size="sm"` variant at 24px to match `Button` `sm` and `Input` compact callsites.
+- Trigger colors:
+  - light: transparent fill on `border-input`.
+  - dark: `bg-input/30` (matches `Input` disabled fill semantics) with a `bg-input/50` hover for clearer affordance.
+- Hover on the trigger uses `bg-accent/40` (light) so the field hint mirrors how `DropdownMenuItem` uses `bg-accent` for active items.
+- Focus ring uses the shared 3-px ring style for consistency with `Button` and `Checkbox`.
+- Content surface uses `bg-popover` with the same animate-in/animate-out / slide-in motion as `DropdownMenu` for a unified popover language.
+- Item active state uses `focus:bg-accent` and renders an `ItemIndicator` (`CheckIcon`) inside an absolutely-positioned right-side slot, leaving label space free of leading checks.
+
+### Dialog Component
+
+- Added `src/components/ui/dialog.tsx` using `@radix-ui/react-dialog` primitives.
+- Composed primitives: `Dialog`, `DialogTrigger`, `DialogPortal`, `DialogOverlay`, `DialogClose`, `DialogContent`, `DialogHeader`, `DialogFooter`, `DialogTitle`, `DialogDescription`.
+- Overlay uses `bg-black/50` for a single, neutral scrim on both themes.
+- Content surface: centered, `rounded-lg`, `bg-background`, `shadow-lg`, with `zoom-in-95`/`zoom-out-95` and fade motion to match other layered surfaces.
+- Optional inline close button (`showCloseButton`) is on by default and uses an `XIcon` lucide glyph at `size-4` to match other system icons.
+
+### Sheet Component
+
+- Added `src/components/ui/sheet.tsx` reusing `@radix-ui/react-dialog` primitives (Sheet shares Dialog underneath; the public surface is intentionally separate).
+- `side` prop supports `right` (default), `left`, `top`, and `bottom`, with side-specific borders so the sheet reads as a slide-in panel rather than a centered modal.
+- Side-specific motion (`slide-in-from-*` / `slide-out-to-*`) wires to `data-state` for open/close transitions; durations differ for open (500ms) and close (300ms) so dismissals feel fast and entrances feel deliberate.
+
+### Command / Combobox Component
+
+- Added `src/components/ui/command.tsx` using `cmdk` primitives.
+- Composed primitives: `Command`, `CommandDialog`, `CommandInput`, `CommandList`, `CommandEmpty`, `CommandGroup`, `CommandItem`, `CommandSeparator`, `CommandShortcut`.
+- Input uses a leading `SearchIcon` and matches `Input` typography (`text-sm`) so the palette field feels native to the rest of the form layer.
+- Items use `data-[selected=true]:bg-accent / text-accent-foreground` (the same hover language as `DropdownMenuItem`) so keyboard- and pointer-active rows look identical.
+- `CommandDialog` reuses the new `Dialog` primitive but hides the dialog title/description via `sr-only` (kept for assistive tech) and renders the command surface flush inside the dialog (`p-0`).
+
+### Global Definitions
+
+- Source: `src/index.css`.
+- Added accordion height-animation keyframes and tokens inside `@theme inline`:
+  - `--animate-accordion-down: accordion-down 0.2s ease-out`
+  - `--animate-accordion-up: accordion-up 0.2s ease-out`
+  - `@keyframes accordion-down` from height 0 to `var(--radix-accordion-content-height)`.
+  - `@keyframes accordion-up` from `var(--radix-accordion-content-height)` to height 0.
+- These animations are consumed by `Accordion` via Tailwind v4’s `animate-accordion-down` / `animate-accordion-up` utilities.
+
+### Library Exports
+
+- Source: `src/index.ts`.
+- Re-exported all newly added primitives so consumers can import from `@vunet/vuds-x` directly:
+  - `accordion`, `avatar`, `card`, `command`, `dialog`, `popover`, `progress`, `scroll-area`, `select`, `sheet`, `skeleton`, `slider`, `switch`, `tabs`, `toggle`, `toggle-group`.
+
+### Trial Page
+
+- Source: `src/pages/trial.tsx`.
+- Added live demos for every new component, each with state where it makes sense (Switch, Slider single + range, Toggle Group single + multiple, Tabs, Command, Popover, Dialog, Sheet, Progress with auto-stepping value).
+- Added a `⌘K` / `Ctrl+K` shortcut on the trial page that toggles the `CommandDialog` palette.
+- Card demo composes `Progress` inside a card to show real layout interplay (Pro plan summary + Storage usage).
+- Skeleton demo is laid out inside a `Card` row to show the loading pattern in context (avatar circle + two text lines + action stub).
+- Sheet demo iterates all four sides (`right`, `left`, `top`, `bottom`) with the same internal `Field` form so the side variants can be compared directly.
+- Tabs demo populates each panel with a real `Card` (Overview, Usage with `Progress` bars, Billing) instead of placeholder text so the active-state visuals can be evaluated against real content.
+- Avatar demo includes a stacked, ring-bordered group (`+4` tail) to validate `ring-2 ring-background` rendering on real surfaces.
+
 ## 2026-04-29
 
 Scope: Skills ledger page for agent skills, AI tooling, and external sources used during repo creation and maintenance.

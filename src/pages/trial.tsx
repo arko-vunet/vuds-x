@@ -37,6 +37,81 @@ import {
   FieldLegend,
 } from "@/components/ui/field";
 import { Spinner } from "@/components/ui/spinner";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import {
+  Card,
+  CardAction,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import {
+  Command,
+  CommandDialog,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+  CommandSeparator,
+  CommandShortcut,
+} from "@/components/ui/command";
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { Progress } from "@/components/ui/progress";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectSeparator,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import {
+  Sheet,
+  SheetClose,
+  SheetContent,
+  SheetDescription,
+  SheetFooter,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
+import { Skeleton } from "@/components/ui/skeleton";
+import { Slider } from "@/components/ui/slider";
+import { Switch } from "@/components/ui/switch";
+import {
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
+} from "@/components/ui/tabs";
+import { Toggle } from "@/components/ui/toggle";
+import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { toast } from "sonner";
 import type {
   ColumnDef,
@@ -66,6 +141,19 @@ import {
   MinusIcon,
   PlusIcon,
   DownloadIcon,
+  BoldIcon,
+  ItalicIcon,
+  UnderlineIcon,
+  AlignLeftIcon,
+  AlignCenterIcon,
+  AlignRightIcon,
+  CalculatorIcon,
+  CalendarIcon,
+  CreditCardIcon,
+  SettingsIcon,
+  SmileIcon,
+  UserIcon,
+  Volume2Icon,
 } from "lucide-react";
 
 const variants = [
@@ -355,12 +443,37 @@ const inputDemoBlockStyle = {
 export default function TrialPage() {
   const [label, setLabel] = useState("personal");
   const [emailUpdatesEnabled, setEmailUpdatesEnabled] = useState(false);
+  const [marketingSwitch, setMarketingSwitch] = useState(true);
+  const [volumeSlider, setVolumeSlider] = useState<number[]>([42]);
+  const [rangeSlider, setRangeSlider] = useState<number[]>([20, 80]);
+  const [textAlign, setTextAlign] = useState("left");
+  const [textFormat, setTextFormat] = useState<string[]>(["bold"]);
+  const [commandOpen, setCommandOpen] = useState(false);
+  const [progressValue, setProgressValue] = useState(13);
   const [transactionColumnFilters, setTransactionColumnFilters] =
     useState<ColumnFiltersState>([
       { id: "status", value: ["Needs review"] },
     ]);
   const [transactionRowSelection, setTransactionRowSelection] =
     useState<RowSelectionState>({});
+
+  useEffect(() => {
+    const handler = (event: KeyboardEvent) => {
+      if (event.key === "k" && (event.metaKey || event.ctrlKey)) {
+        event.preventDefault();
+        setCommandOpen((open) => !open);
+      }
+    };
+    document.addEventListener("keydown", handler);
+    return () => document.removeEventListener("keydown", handler);
+  }, []);
+
+  useEffect(() => {
+    const interval = window.setInterval(() => {
+      setProgressValue((value) => (value >= 100 ? 13 : value + 7));
+    }, 1200);
+    return () => window.clearInterval(interval);
+  }, []);
 
   const transactionStatusFilters = getColumnFilterValues(
     transactionColumnFilters,
@@ -1285,6 +1398,749 @@ export default function TrialPage() {
               </AlertDescription>
             </Alert>
           </div>
+        </div>
+
+        <hr />
+
+        <div style={{ display: "grid", gap: "0.75rem" }}>
+          <h2>Card</h2>
+          <div className="grid gap-4 sm:grid-cols-2">
+            <Card>
+              <CardHeader>
+                <CardTitle>Plan summary</CardTitle>
+                <CardDescription>
+                  Pro tier renews on May 14, 2026.
+                </CardDescription>
+                <CardAction>
+                  <Badge variant="secondary">Active</Badge>
+                </CardAction>
+              </CardHeader>
+              <CardContent>
+                <div className="grid gap-3 text-sm">
+                  <div className="flex items-center justify-between">
+                    <span className="text-muted-foreground">Seats</span>
+                    <span className="font-medium tabular-nums">12 / 20</span>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span className="text-muted-foreground">Monthly spend</span>
+                    <span className="font-medium tabular-nums">$2,480.00</span>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span className="text-muted-foreground">Next invoice</span>
+                    <span className="font-medium tabular-nums">May 14</span>
+                  </div>
+                </div>
+              </CardContent>
+              <CardFooter className="border-t">
+                <Button variant="outline" size="sm">
+                  Manage plan
+                </Button>
+              </CardFooter>
+            </Card>
+
+            <Card>
+              <CardHeader>
+                <CardTitle>Storage usage</CardTitle>
+                <CardDescription>
+                  Across all workspace projects.
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="grid gap-2">
+                  <div className="flex items-baseline justify-between">
+                    <span className="text-sm text-muted-foreground">
+                      48.2 GB of 100 GB used
+                    </span>
+                    <span className="text-xs text-muted-foreground tabular-nums">
+                      48%
+                    </span>
+                  </div>
+                  <Progress value={48} />
+                </div>
+              </CardContent>
+              <CardFooter className="gap-2">
+                <Button size="sm">Upgrade</Button>
+                <Button size="sm" variant="ghost">
+                  See breakdown
+                </Button>
+              </CardFooter>
+            </Card>
+          </div>
+        </div>
+
+        <hr />
+
+        <div style={{ display: "grid", gap: "0.75rem" }}>
+          <h2>Skeleton</h2>
+          <Card>
+            <CardContent className="flex items-center gap-4">
+              <Skeleton className="size-10 rounded-full" />
+              <div className="grid flex-1 gap-2">
+                <Skeleton className="h-3 w-1/3" />
+                <Skeleton className="h-3 w-2/3" />
+              </div>
+              <Skeleton className="h-8 w-20" />
+            </CardContent>
+          </Card>
+        </div>
+
+        <hr />
+
+        <div style={{ display: "grid", gap: "0.75rem" }}>
+          <h2>Avatar</h2>
+          <div
+            style={{
+              display: "flex",
+              gap: "0.75rem",
+              flexWrap: "wrap",
+              alignItems: "center",
+            }}
+          >
+            <Avatar>
+              <AvatarImage
+                src="https://github.com/shadcn.png"
+                alt="@shadcn"
+              />
+              <AvatarFallback>CN</AvatarFallback>
+            </Avatar>
+            <Avatar>
+              <AvatarImage src="" alt="" />
+              <AvatarFallback>AP</AvatarFallback>
+            </Avatar>
+            <Avatar className="size-10">
+              <AvatarImage src="" alt="" />
+              <AvatarFallback>VU</AvatarFallback>
+            </Avatar>
+            <div className="flex -space-x-2">
+              <Avatar className="ring-2 ring-background">
+                <AvatarFallback>AP</AvatarFallback>
+              </Avatar>
+              <Avatar className="ring-2 ring-background">
+                <AvatarFallback>VU</AvatarFallback>
+              </Avatar>
+              <Avatar className="ring-2 ring-background">
+                <AvatarFallback>SK</AvatarFallback>
+              </Avatar>
+              <Avatar className="ring-2 ring-background">
+                <AvatarFallback className="bg-primary-soft text-primary">
+                  +4
+                </AvatarFallback>
+              </Avatar>
+            </div>
+          </div>
+        </div>
+
+        <hr />
+
+        <div style={{ display: "grid", gap: "0.75rem" }}>
+          <h2>Switch</h2>
+          <div className="grid gap-3 max-w-sm">
+            <Field orientation="horizontal">
+              <Switch
+                id="trial-switch-marketing"
+                checked={marketingSwitch}
+                onCheckedChange={setMarketingSwitch}
+              />
+              <FieldLabel htmlFor="trial-switch-marketing">
+                Marketing emails
+              </FieldLabel>
+            </Field>
+            <Field orientation="horizontal">
+              <Switch id="trial-switch-disabled" disabled />
+              <FieldLabel htmlFor="trial-switch-disabled">
+                Disabled switch
+              </FieldLabel>
+            </Field>
+            <p className="text-xs text-muted-foreground">
+              Marketing emails: {marketingSwitch ? "on" : "off"}
+            </p>
+          </div>
+        </div>
+
+        <hr />
+
+        <div style={{ display: "grid", gap: "0.75rem" }}>
+          <h2>Progress</h2>
+          <div className="grid gap-4 max-w-md">
+            <Progress value={progressValue} />
+            <Progress value={100} />
+            <Progress value={0} />
+          </div>
+        </div>
+
+        <hr />
+
+        <div style={{ display: "grid", gap: "0.75rem" }}>
+          <h2>Slider</h2>
+          <div className="grid gap-6 max-w-md">
+            <div className="grid gap-2">
+              <div className="flex items-center justify-between text-sm">
+                <span>Volume</span>
+                <span className="text-muted-foreground tabular-nums">
+                  {volumeSlider[0]}%
+                </span>
+              </div>
+              <Slider
+                value={volumeSlider}
+                onValueChange={setVolumeSlider}
+                max={100}
+                step={1}
+                aria-label="Volume"
+              />
+            </div>
+            <div className="grid gap-2">
+              <div className="flex items-center justify-between text-sm">
+                <span>Price range</span>
+                <span className="text-muted-foreground tabular-nums">
+                  ${rangeSlider[0]} – ${rangeSlider[1]}
+                </span>
+              </div>
+              <Slider
+                value={rangeSlider}
+                onValueChange={setRangeSlider}
+                min={0}
+                max={100}
+                step={1}
+                aria-label="Price range"
+              />
+            </div>
+            <div className="grid gap-2">
+              <span className="text-sm">Disabled</span>
+              <Slider defaultValue={[40]} disabled aria-label="Disabled slider" />
+            </div>
+          </div>
+        </div>
+
+        <hr />
+
+        <div style={{ display: "grid", gap: "0.75rem" }}>
+          <h2>Toggle</h2>
+          <div
+            style={{
+              display: "flex",
+              gap: "0.75rem",
+              flexWrap: "wrap",
+              alignItems: "center",
+            }}
+          >
+            <Toggle aria-label="Toggle bold">
+              <BoldIcon />
+            </Toggle>
+            <Toggle variant="outline" aria-label="Toggle italic">
+              <ItalicIcon />
+            </Toggle>
+            <Toggle aria-label="Toggle italic with text">
+              <ItalicIcon />
+              Italic
+            </Toggle>
+            <Toggle disabled aria-label="Disabled toggle">
+              <UnderlineIcon />
+            </Toggle>
+          </div>
+        </div>
+
+        <div style={{ display: "grid", gap: "0.75rem" }}>
+          <h2>Toggle Group</h2>
+          <div className="grid gap-4">
+            <div className="grid gap-1.5">
+              <span className="text-xs text-muted-foreground">
+                Single ({textAlign})
+              </span>
+              <ToggleGroup
+                type="single"
+                value={textAlign}
+                onValueChange={(value) => value && setTextAlign(value)}
+                variant="outline"
+                aria-label="Text alignment"
+              >
+                <ToggleGroupItem value="left" aria-label="Align left">
+                  <AlignLeftIcon />
+                </ToggleGroupItem>
+                <ToggleGroupItem value="center" aria-label="Align center">
+                  <AlignCenterIcon />
+                </ToggleGroupItem>
+                <ToggleGroupItem value="right" aria-label="Align right">
+                  <AlignRightIcon />
+                </ToggleGroupItem>
+              </ToggleGroup>
+            </div>
+            <div className="grid gap-1.5">
+              <span className="text-xs text-muted-foreground">
+                Multiple ({textFormat.join(", ") || "none"})
+              </span>
+              <ToggleGroup
+                type="multiple"
+                value={textFormat}
+                onValueChange={setTextFormat}
+                aria-label="Text formatting"
+              >
+                <ToggleGroupItem value="bold" aria-label="Bold">
+                  <BoldIcon />
+                </ToggleGroupItem>
+                <ToggleGroupItem value="italic" aria-label="Italic">
+                  <ItalicIcon />
+                </ToggleGroupItem>
+                <ToggleGroupItem value="underline" aria-label="Underline">
+                  <UnderlineIcon />
+                </ToggleGroupItem>
+              </ToggleGroup>
+            </div>
+          </div>
+        </div>
+
+        <hr />
+
+        <div style={{ display: "grid", gap: "0.75rem" }}>
+          <h2>Tabs</h2>
+          <Tabs defaultValue="overview" className="max-w-xl">
+            <TabsList>
+              <TabsTrigger value="overview">Overview</TabsTrigger>
+              <TabsTrigger value="usage">Usage</TabsTrigger>
+              <TabsTrigger value="billing">Billing</TabsTrigger>
+              <TabsTrigger value="logs" disabled>
+                Logs
+              </TabsTrigger>
+            </TabsList>
+            <TabsContent value="overview">
+              <Card>
+                <CardHeader>
+                  <CardTitle>Workspace overview</CardTitle>
+                  <CardDescription>
+                    Snapshot of project health, environments, and recent
+                    activity.
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="text-sm text-muted-foreground">
+                  All systems operational. 3 deployments in the last 24 hours.
+                </CardContent>
+              </Card>
+            </TabsContent>
+            <TabsContent value="usage">
+              <Card>
+                <CardHeader>
+                  <CardTitle>Usage</CardTitle>
+                  <CardDescription>
+                    Resource consumption for the current billing cycle.
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="grid gap-3">
+                  <div className="grid gap-2">
+                    <div className="flex justify-between text-sm">
+                      <span>API requests</span>
+                      <span className="tabular-nums text-muted-foreground">
+                        62%
+                      </span>
+                    </div>
+                    <Progress value={62} />
+                  </div>
+                  <div className="grid gap-2">
+                    <div className="flex justify-between text-sm">
+                      <span>Bandwidth</span>
+                      <span className="tabular-nums text-muted-foreground">
+                        24%
+                      </span>
+                    </div>
+                    <Progress value={24} />
+                  </div>
+                </CardContent>
+              </Card>
+            </TabsContent>
+            <TabsContent value="billing">
+              <Card>
+                <CardHeader>
+                  <CardTitle>Billing</CardTitle>
+                  <CardDescription>
+                    Manage seats, payment methods, and invoices.
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="text-sm text-muted-foreground">
+                  Current plan: Pro · 12 active seats · Next invoice May 14.
+                </CardContent>
+              </Card>
+            </TabsContent>
+          </Tabs>
+        </div>
+
+        <hr />
+
+        <div style={{ display: "grid", gap: "0.75rem" }}>
+          <h2>Popover</h2>
+          <div className="flex flex-wrap gap-3">
+            <Popover>
+              <PopoverTrigger asChild>
+                <Button variant="outline">Open dimensions</Button>
+              </PopoverTrigger>
+              <PopoverContent>
+                <div className="grid gap-3">
+                  <div className="grid gap-1">
+                    <h4 className="text-sm font-medium">Dimensions</h4>
+                    <p className="text-xs text-muted-foreground">
+                      Set the dimensions for the layer.
+                    </p>
+                  </div>
+                  <FieldGroup>
+                    <Field orientation="horizontal">
+                      <FieldLabel htmlFor="popover-width" className="w-20">
+                        Width
+                      </FieldLabel>
+                      <Input id="popover-width" defaultValue="100%" />
+                    </Field>
+                    <Field orientation="horizontal">
+                      <FieldLabel htmlFor="popover-height" className="w-20">
+                        Height
+                      </FieldLabel>
+                      <Input id="popover-height" defaultValue="25px" />
+                    </Field>
+                  </FieldGroup>
+                </div>
+              </PopoverContent>
+            </Popover>
+          </div>
+        </div>
+
+        <hr />
+
+        <div style={{ display: "grid", gap: "0.75rem" }}>
+          <h2>Select</h2>
+          <div className="grid gap-3 max-w-sm">
+            <Field>
+              <FieldLabel htmlFor="select-region">Region</FieldLabel>
+              <Select>
+                <SelectTrigger id="select-region" className="w-full">
+                  <SelectValue placeholder="Pick a region" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectGroup>
+                    <SelectLabel>Americas</SelectLabel>
+                    <SelectItem value="us-east-1">us-east-1</SelectItem>
+                    <SelectItem value="us-west-2">us-west-2</SelectItem>
+                  </SelectGroup>
+                  <SelectSeparator />
+                  <SelectGroup>
+                    <SelectLabel>Europe</SelectLabel>
+                    <SelectItem value="eu-west-1">eu-west-1</SelectItem>
+                    <SelectItem value="eu-central-1">eu-central-1</SelectItem>
+                  </SelectGroup>
+                  <SelectSeparator />
+                  <SelectGroup>
+                    <SelectLabel>Asia Pacific</SelectLabel>
+                    <SelectItem value="ap-south-1">ap-south-1</SelectItem>
+                    <SelectItem value="ap-southeast-1">
+                      ap-southeast-1
+                    </SelectItem>
+                    <SelectItem value="ap-northeast-1" disabled>
+                      ap-northeast-1
+                    </SelectItem>
+                  </SelectGroup>
+                </SelectContent>
+              </Select>
+              <FieldDescription>
+                Region affects latency and data residency.
+              </FieldDescription>
+            </Field>
+            <Field>
+              <FieldLabel htmlFor="select-size">Compact size</FieldLabel>
+              <Select defaultValue="medium">
+                <SelectTrigger id="select-size" size="sm">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="small">Small</SelectItem>
+                  <SelectItem value="medium">Medium</SelectItem>
+                  <SelectItem value="large">Large</SelectItem>
+                </SelectContent>
+              </Select>
+            </Field>
+          </div>
+        </div>
+
+        <hr />
+
+        <div style={{ display: "grid", gap: "0.75rem" }}>
+          <h2>Dialog</h2>
+          <div className="flex flex-wrap gap-3">
+            <Dialog>
+              <DialogTrigger asChild>
+                <Button>Edit profile</Button>
+              </DialogTrigger>
+              <DialogContent>
+                <DialogHeader>
+                  <DialogTitle>Edit profile</DialogTitle>
+                  <DialogDescription>
+                    Make changes to your profile here. Click save when you are
+                    done.
+                  </DialogDescription>
+                </DialogHeader>
+                <FieldGroup>
+                  <Field>
+                    <FieldLabel htmlFor="dialog-name">Name</FieldLabel>
+                    <Input id="dialog-name" defaultValue="Ada Lovelace" />
+                  </Field>
+                  <Field>
+                    <FieldLabel htmlFor="dialog-username">Username</FieldLabel>
+                    <Input id="dialog-username" defaultValue="@ada" />
+                  </Field>
+                </FieldGroup>
+                <DialogFooter>
+                  <DialogClose asChild>
+                    <Button variant="outline">Cancel</Button>
+                  </DialogClose>
+                  <Button>Save changes</Button>
+                </DialogFooter>
+              </DialogContent>
+            </Dialog>
+
+            <Dialog>
+              <DialogTrigger asChild>
+                <Button variant="destructive">Delete workspace</Button>
+              </DialogTrigger>
+              <DialogContent>
+                <DialogHeader>
+                  <DialogTitle>Delete workspace?</DialogTitle>
+                  <DialogDescription>
+                    This permanently removes all projects, integrations, and
+                    audit logs. This action cannot be undone.
+                  </DialogDescription>
+                </DialogHeader>
+                <DialogFooter>
+                  <DialogClose asChild>
+                    <Button variant="outline">Cancel</Button>
+                  </DialogClose>
+                  <Button variant="destructive">Delete</Button>
+                </DialogFooter>
+              </DialogContent>
+            </Dialog>
+          </div>
+        </div>
+
+        <hr />
+
+        <div style={{ display: "grid", gap: "0.75rem" }}>
+          <h2>Sheet</h2>
+          <div className="flex flex-wrap gap-3">
+            {(["right", "left", "top", "bottom"] as const).map((side) => (
+              <Sheet key={side}>
+                <SheetTrigger asChild>
+                  <Button variant="outline">
+                    Open {side}
+                  </Button>
+                </SheetTrigger>
+                <SheetContent side={side}>
+                  <SheetHeader>
+                    <SheetTitle>Edit profile</SheetTitle>
+                    <SheetDescription>
+                      Make changes to your profile here. Click save when done.
+                    </SheetDescription>
+                  </SheetHeader>
+                  <div className="grid gap-4 px-6">
+                    <FieldGroup>
+                      <Field>
+                        <FieldLabel htmlFor={`sheet-name-${side}`}>
+                          Name
+                        </FieldLabel>
+                        <Input
+                          id={`sheet-name-${side}`}
+                          defaultValue="Ada Lovelace"
+                        />
+                      </Field>
+                      <Field>
+                        <FieldLabel htmlFor={`sheet-email-${side}`}>
+                          Email
+                        </FieldLabel>
+                        <Input
+                          id={`sheet-email-${side}`}
+                          type="email"
+                          defaultValue="ada@example.com"
+                        />
+                      </Field>
+                    </FieldGroup>
+                  </div>
+                  <SheetFooter>
+                    <Button>Save changes</Button>
+                    <SheetClose asChild>
+                      <Button variant="outline">Close</Button>
+                    </SheetClose>
+                  </SheetFooter>
+                </SheetContent>
+              </Sheet>
+            ))}
+          </div>
+        </div>
+
+        <hr />
+
+        <div style={{ display: "grid", gap: "0.75rem" }}>
+          <h2>Scroll Area</h2>
+          <div className="grid gap-4 sm:grid-cols-2">
+            <ScrollArea className="h-48 w-full rounded-md border">
+              <div className="p-4">
+                <h4 className="mb-2 text-sm font-medium">Tags</h4>
+                <div className="grid gap-2 text-sm">
+                  {Array.from({ length: 30 }, (_, i) => (
+                    <div
+                      key={`tag-${i}`}
+                      className="flex items-center justify-between"
+                    >
+                      <span>v1.2.0-beta.{i + 1}</span>
+                      <span className="text-xs text-muted-foreground tabular-nums">
+                        {String(i + 1).padStart(3, "0")}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </ScrollArea>
+
+            <ScrollArea className="h-48 w-full rounded-md border">
+              <div className="grid gap-3 p-4">
+                <h4 className="text-sm font-medium">Activity</h4>
+                {Array.from({ length: 12 }, (_, i) => (
+                  <Card key={`activity-${i}`}>
+                    <CardContent>
+                      <div className="text-sm font-medium">
+                        Deployment #{420 - i}
+                      </div>
+                      <div className="text-xs text-muted-foreground">
+                        Pushed {i + 1} hour{i === 0 ? "" : "s"} ago
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            </ScrollArea>
+          </div>
+        </div>
+
+        <hr />
+
+        <div style={{ display: "grid", gap: "0.75rem" }}>
+          <h2>Accordion</h2>
+          <Accordion type="single" collapsible className="max-w-xl">
+            <AccordionItem value="item-1">
+              <AccordionTrigger>Is this accessible?</AccordionTrigger>
+              <AccordionContent>
+                Yes. It adheres to the WAI-ARIA design pattern and supports full
+                keyboard navigation.
+              </AccordionContent>
+            </AccordionItem>
+            <AccordionItem value="item-2">
+              <AccordionTrigger>Can it be themed?</AccordionTrigger>
+              <AccordionContent>
+                Yes. All visuals derive from the local design tokens defined in
+                <code> src/index.css</code>, so the accordion follows light and
+                dark themes automatically.
+              </AccordionContent>
+            </AccordionItem>
+            <AccordionItem value="item-3">
+              <AccordionTrigger>Is it animated?</AccordionTrigger>
+              <AccordionContent>
+                Yes. Open and close use height-based keyframes that respect
+                <code> prefers-reduced-motion</code>.
+              </AccordionContent>
+            </AccordionItem>
+          </Accordion>
+        </div>
+
+        <hr />
+
+        <div style={{ display: "grid", gap: "0.75rem" }}>
+          <h2>Command</h2>
+          <Command className="rounded-md border max-w-md">
+            <CommandInput placeholder="Type a command or search…" />
+            <CommandList>
+              <CommandEmpty>No results found.</CommandEmpty>
+              <CommandGroup heading="Suggestions">
+                <CommandItem>
+                  <CalendarIcon />
+                  Calendar
+                </CommandItem>
+                <CommandItem>
+                  <SmileIcon />
+                  Search Emoji
+                </CommandItem>
+                <CommandItem>
+                  <CalculatorIcon />
+                  Calculator
+                </CommandItem>
+              </CommandGroup>
+              <CommandSeparator />
+              <CommandGroup heading="Settings">
+                <CommandItem>
+                  <UserIcon />
+                  Profile
+                  <CommandShortcut>⌘P</CommandShortcut>
+                </CommandItem>
+                <CommandItem>
+                  <CreditCardIcon />
+                  Billing
+                  <CommandShortcut>⌘B</CommandShortcut>
+                </CommandItem>
+                <CommandItem>
+                  <SettingsIcon />
+                  Settings
+                  <CommandShortcut>⌘S</CommandShortcut>
+                </CommandItem>
+              </CommandGroup>
+            </CommandList>
+          </Command>
+
+          <div>
+            <Button variant="outline" onClick={() => setCommandOpen(true)}>
+              Open command palette
+              <kbd className="ml-2 inline-flex h-5 select-none items-center gap-1 rounded border bg-muted px-1.5 font-mono text-[10px] font-medium text-muted-foreground">
+                <span className="text-xs">⌘</span>K
+              </kbd>
+            </Button>
+          </div>
+          <CommandDialog open={commandOpen} onOpenChange={setCommandOpen}>
+            <CommandInput placeholder="Type a command or search…" />
+            <CommandList>
+              <CommandEmpty>No results found.</CommandEmpty>
+              <CommandGroup heading="Suggestions">
+                <CommandItem
+                  onSelect={() => {
+                    setCommandOpen(false);
+                    toast("Calendar opened");
+                  }}
+                >
+                  <CalendarIcon />
+                  Calendar
+                </CommandItem>
+                <CommandItem
+                  onSelect={() => {
+                    setCommandOpen(false);
+                    toast("Volume tweaked");
+                  }}
+                >
+                  <Volume2Icon />
+                  Audio
+                </CommandItem>
+              </CommandGroup>
+              <CommandSeparator />
+              <CommandGroup heading="Settings">
+                <CommandItem
+                  onSelect={() => {
+                    setCommandOpen(false);
+                    toast("Profile opened");
+                  }}
+                >
+                  <UserIcon />
+                  Profile
+                  <CommandShortcut>⌘P</CommandShortcut>
+                </CommandItem>
+                <CommandItem
+                  onSelect={() => {
+                    setCommandOpen(false);
+                    toast("Settings opened");
+                  }}
+                >
+                  <SettingsIcon />
+                  Settings
+                  <CommandShortcut>⌘S</CommandShortcut>
+                </CommandItem>
+              </CommandGroup>
+            </CommandList>
+          </CommandDialog>
         </div>
       </section>
     </main>
