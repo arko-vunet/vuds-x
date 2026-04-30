@@ -112,6 +112,7 @@ import {
 } from "@/components/ui/tabs";
 import { Toggle } from "@/components/ui/toggle";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
+import { Code, Heading, Kbd, Text } from "@/components/ui/typography";
 import { toast } from "sonner";
 import type {
   ColumnDef,
@@ -435,6 +436,32 @@ const inputDemoSubheadingStyle = {
   margin: 0,
 } as const;
 
+function ScaleRow({
+  size,
+  sample,
+  specHint,
+  children,
+}: {
+  size: string;
+  sample: string;
+  specHint: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <div className="grid grid-cols-[140px_1fr] items-baseline gap-4 border-b border-border/60 pb-3 last:border-b-0 last:pb-0">
+      <div className="grid gap-0.5">
+        <Text size="body-xs" tone="default" mono>
+          {sample}
+        </Text>
+        <Text size="caption" tone="subtle" mono>
+          {specHint}
+        </Text>
+      </div>
+      <div data-size={size}>{children}</div>
+    </div>
+  );
+}
+
 const inputDemoBlockStyle = {
   display: "grid" as const,
   gap: "0.375rem",
@@ -538,6 +565,238 @@ export default function TrialPage() {
           margin: "0 auto",
         }}
       >
+        <div style={{ display: "grid", gap: "1rem" }}>
+          <h2>Typography Scale</h2>
+          <Text size="body-sm" tone="muted">
+            14 steps tuned for info-dense surfaces. Each utility sets size,
+            line-height, tracking, and weight in one class. Tokens defined in{" "}
+            <Code variant="ghost" size="sm">
+              src/index.css
+            </Code>
+            .
+          </Text>
+
+          <div className="grid gap-1 rounded-md border p-4">
+            <Text
+              size="caption"
+              tone="subtle"
+              transform="uppercase"
+              className="mb-2"
+            >
+              Title · page → card hierarchy
+            </Text>
+            <div className="grid gap-3">
+              <ScaleRow size="title-lg" sample="title-lg" specHint="28 / 32 / -0.42 / 600">
+                <Heading level={2} size="title-lg">
+                  Workspace settings
+                </Heading>
+              </ScaleRow>
+              <ScaleRow size="title-md" sample="title-md" specHint="22 / 28 / -0.22 / 600">
+                <Heading level={3} size="title-md">
+                  Workspace settings
+                </Heading>
+              </ScaleRow>
+              <ScaleRow size="title-sm" sample="title-sm" specHint="18 / 24 / -0.09 / 600">
+                <Heading level={4} size="title-sm">
+                  Workspace settings
+                </Heading>
+              </ScaleRow>
+              <ScaleRow size="title-xs" sample="title-xs" specHint="14 / 20 / 0 / 600">
+                <Heading level={5} size="title-xs">
+                  Workspace settings
+                </Heading>
+              </ScaleRow>
+            </div>
+          </div>
+
+          <div className="grid gap-1 rounded-md border p-4">
+            <Text
+              size="caption"
+              tone="subtle"
+              transform="uppercase"
+              className="mb-2"
+            >
+              Body · primary content
+            </Text>
+            <div className="grid gap-3">
+              <ScaleRow size="body-lg" sample="body-lg" specHint="16 / 24 / 0 / 400">
+                <Text size="body-lg">
+                  Predictable scaling for every density. Mix sizes without rhythm
+                  drift.
+                </Text>
+              </ScaleRow>
+              <ScaleRow size="body-md" sample="body-md (default)" specHint="14 / 20 / 0 / 400">
+                <Text size="body-md">
+                  Predictable scaling for every density. Mix sizes without rhythm
+                  drift.
+                </Text>
+              </ScaleRow>
+              <ScaleRow size="body-sm" sample="body-sm" specHint="13 / 18 / +0.06 / 400">
+                <Text size="body-sm">
+                  Predictable scaling for every density. Mix sizes without rhythm
+                  drift.
+                </Text>
+              </ScaleRow>
+              <ScaleRow size="body-xs" sample="body-xs" specHint="12 / 16 / +0.12 / 400">
+                <Text size="body-xs">
+                  Predictable scaling for every density. Mix sizes without rhythm
+                  drift.
+                </Text>
+              </ScaleRow>
+            </div>
+          </div>
+
+          <div className="grid gap-1 rounded-md border p-4">
+            <Text
+              size="caption"
+              tone="subtle"
+              transform="uppercase"
+              className="mb-2"
+            >
+              Caption + code · metadata, IDs, snippets
+            </Text>
+            <div className="grid gap-3">
+              <ScaleRow size="caption" sample="caption" specHint="11 / 14 / +0.22 / 500">
+                <Text size="caption" transform="uppercase" tone="subtle">
+                  Eyebrow · status · last updated
+                </Text>
+              </ScaleRow>
+              <ScaleRow size="code-md" sample="code-md" specHint="13 / 18 / 0 / 400 mono">
+                <Code>const status = &quot;ready&quot;</Code>
+              </ScaleRow>
+              <ScaleRow size="code-sm" sample="code-sm" specHint="12 / 16 / 0 / 400 mono">
+                <Code size="sm">txn_a8f2c91d</Code>
+              </ScaleRow>
+            </div>
+          </div>
+        </div>
+
+        <div style={{ display: "grid", gap: "0.75rem" }}>
+          <h2>Tone</h2>
+          <Text size="body-sm" tone="muted">
+            Eight semantic tones drawn from existing color tokens.
+          </Text>
+          <div className="grid gap-2 rounded-md border p-4">
+            {(
+              [
+                "default",
+                "muted",
+                "subtle",
+                "destructive",
+                "success",
+                "info",
+                "warning",
+              ] as const
+            ).map((tone) => (
+              <div
+                key={tone}
+                className="grid grid-cols-[160px_1fr] items-baseline gap-3"
+              >
+                <Text size="body-xs" tone="subtle" mono>
+                  tone={tone}
+                </Text>
+                <Text size="body-md" tone={tone}>
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                </Text>
+              </div>
+            ))}
+            <div className="grid grid-cols-[160px_1fr] items-baseline gap-3 rounded-sm bg-primary p-2">
+              <Text size="body-xs" tone="inverse" mono className="opacity-80">
+                tone=inverse
+              </Text>
+              <Text size="body-md" tone="inverse">
+                Use on primary or dark surfaces only.
+              </Text>
+            </div>
+          </div>
+        </div>
+
+        <div style={{ display: "grid", gap: "0.75rem" }}>
+          <h2>Tabular Numerals</h2>
+          <Text size="body-sm" tone="muted">
+            <Code variant="ghost" size="sm">
+              tabular
+            </Code>{" "}
+            prop locks digit widths so columns align in tables and dashboards.
+          </Text>
+          <div className="grid gap-3 sm:grid-cols-2">
+            <Card>
+              <CardHeader>
+                <CardTitle>Proportional</CardTitle>
+                <CardDescription>Default — for prose</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="grid gap-1 text-sm">
+                  <Text>1,200,438.10</Text>
+                  <Text>987,654.32</Text>
+                  <Text>11,111,111.11</Text>
+                  <Text>808,080.08</Text>
+                </div>
+              </CardContent>
+            </Card>
+            <Card>
+              <CardHeader>
+                <CardTitle>Tabular</CardTitle>
+                <CardDescription>For finance + tables</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="grid gap-1 text-sm">
+                  <Text tabular>1,200,438.10</Text>
+                  <Text tabular>987,654.32</Text>
+                  <Text tabular>11,111,111.11</Text>
+                  <Text tabular>808,080.08</Text>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+
+        <div style={{ display: "grid", gap: "0.75rem" }}>
+          <h2>Heading by Level</h2>
+          <Text size="body-sm" tone="muted">
+            Each <Code variant="ghost" size="sm">level</Code> resolves to a
+            sensible default <Code variant="ghost" size="sm">size</Code>; both can
+            be set independently.
+          </Text>
+          <div className="grid gap-3 rounded-md border p-4">
+            <Heading level={1}>h1 → title-lg by default</Heading>
+            <Heading level={2}>h2 → title-md</Heading>
+            <Heading level={3}>h3 → title-sm</Heading>
+            <Heading level={4}>h4 → title-xs</Heading>
+            <Heading level={5}>h5 → title-xs</Heading>
+            <Heading level={6}>h6 → title-xs</Heading>
+          </div>
+        </div>
+
+        <div style={{ display: "grid", gap: "0.75rem" }}>
+          <h2>Code + Kbd</h2>
+          <div className="grid gap-3 rounded-md border p-4 text-sm">
+            <Text>
+              Inline default: <Code>npm install @vunet/vuds-x</Code> ships ESM +
+              types.
+            </Text>
+            <Text>
+              Ghost variant: <Code variant="ghost">useFieldContext()</Code> when
+              the surrounding type already conveys hierarchy.
+            </Text>
+            <Text>
+              Muted variant: <Code variant="muted">txn_a8f2c91d</Code> for IDs
+              alongside merchant copy.
+            </Text>
+            <Text>
+              Press <Kbd>⌘</Kbd> <Kbd>K</Kbd> to open the command palette, or{" "}
+              <Kbd>Esc</Kbd> to dismiss.
+            </Text>
+            <Code block>
+              {`function deploy(env: "staging" | "production") {
+  return fetch(\`/api/deploy/\${env}\`, { method: "POST" })
+}`}
+            </Code>
+          </div>
+        </div>
+
+        <hr />
+
         <div style={{ display: "grid", gap: "0.75rem" }}>
           <h2>Button Variants</h2>
           <div style={{ display: "flex", gap: "0.75rem", flexWrap: "wrap" }}>

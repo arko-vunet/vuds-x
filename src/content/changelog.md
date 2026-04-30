@@ -2,6 +2,84 @@
 
 Canonical record of local shadcn customizations for team rollout.
 
+## 2026-04-30 (typography)
+
+Scope: Typography system rollout — an 11-step type scale tuned for info-dense product surfaces, plus `Heading`, `Text`, `Code`, and `Kbd` primitives that consume the scale.
+
+### Type Scale
+
+- Source: `src/index.css`.
+- Added a typographic scale tuned for info-dense product surfaces (default body 14px, mirroring the density used by Linear, Stripe Dashboard, Vercel, and Datadog).
+- 11 steps total — sized for actual product needs, not marketing surfaces:
+  - Title: `title-lg`, `title-md`, `title-sm`, `title-xs` (page → card hierarchy).
+  - Body: `body-lg`, `body-md` (default), `body-sm`, `body-xs` (metadata).
+  - Caption: a single `caption` step at 11/14 with positive tracking (intended for uppercase eyebrows + status microcopy).
+  - Code: `code-md`, `code-sm` (mono numerals + snippets).
+- No display tier (36–56px hero sizes). Pure product surfaces don't need them; big-number metrics belong in a future `Metric` / `Stat` component, not a heading scale.
+- Tracking convention encoded into the tokens themselves:
+  - Titles tighten slightly (`-0.42px` → `0`) so they don't drift apart at larger sizes.
+  - Body stays at 0 tracking.
+  - Sub-body and caption widen tracking (`+0.06`, `+0.12`, `+0.22`) so small copy doesn't collapse visually at 11–13px.
+- Weight pairs: `400` regular (body, code), `500` medium (caption), `600` semibold (titles).
+- Line-heights snap to 4-px grid increments wherever possible so adjacent text blocks share a vertical rhythm.
+- Each token is exposed in three forms:
+  - Raw vars: `--type-{step}-size`, `--type-{step}-line`, `--type-{step}-track`, `--type-{step}-weight`.
+  - Tailwind v4 composite text utilities: `text-title-lg`, `text-title-md`, `text-body-sm`, `text-caption`, `text-code-md`, etc. — each utility sets size, line-height, letter-spacing, and font-weight in one class.
+  - React component props: `<Heading size="title-lg" />`, `<Text size="body-sm" />`, `<Code size="md" />`.
+
+### Color Tokens
+
+- Source: `src/index.css`.
+- Added `--foreground-subtle` (alias of `--neutral-500` in light, dark-mode-aware via the existing neutral ramp) for the third foreground tier between `foreground` and `muted-foreground`. Used for de-emphasized rows, eyebrow microcopy, table metadata, and inactive nav items.
+- Exposed `--foreground-subtle` to Tailwind as `text-foreground-subtle` via `@theme inline`.
+- Promoted `--code-bg` to a Tailwind utility (`bg-code-bg`) via `@theme inline`, and added a dark-mode override mapping it to `var(--neutral-100)` so inline code reads correctly on both themes.
+
+### Font Stack Tokens
+
+- Source: `src/index.css`.
+- Promoted `--heading` and `--mono` to Tailwind utilities (`font-heading`, `font-mono`) via `@theme inline`, alongside the pre-existing `font-sans`. Components and consumers can now reach for the same font tokens without inline `style={{ fontFamily }}`.
+
+### Typography Components
+
+- Added `src/components/ui/typography.tsx` with the new primitives and `src/components/ui/typography-variants.ts` for the CVA configs (extracted to satisfy fast-refresh lint).
+- `<Heading>`:
+  - `level={1..6}` renders the matching semantic tag (`h1`–`h6`).
+  - `size` defaults to a sensible step for each level (`h1 → title-lg`, `h2 → title-md`, `h3 → title-sm`, `h4/h5/h6 → title-xs`); pass `size` to override without changing semantics.
+  - `tone` selects the color tier (`default`, `muted`, `subtle`, `destructive`, `success`, `info`, `warning`, `inverse`).
+  - `weight` and `tracking` are escape hatches; `asChild` supported via Radix `Slot`.
+- `<Text>`:
+  - `as="p|span|div|li|strong|em|small"` controls the rendered element; default `<p>`.
+  - `size` covers `body-lg`/`body-md`/`body-sm`/`body-xs`/`caption`; default `body-md`.
+  - First-class layout knobs: `tabular` (digits lock width via `tabular-nums`, critical for tables and numeric columns), `mono` (switches to `font-mono`), `truncate`, `align`, `transform`.
+  - Same `tone`/`weight` system as `Heading`.
+- `<Code>`:
+  - Variants: `default` (filled `bg-code-bg`), `muted` (uses muted tokens, intended for IDs alongside copy), `ghost` (no fill, font-only).
+  - `size` is `md` (default) or `sm`.
+  - `block` prop renders a `<pre><code>` with `overflow-x-auto` for snippet blocks.
+- `<Kbd>`:
+  - Single primitive matching the keyboard-key affordance used in the new Command palette demo.
+  - Geometry: 20px tall, 1px `border-border`, `bg-muted`, 10px mono font, 4-px radius, intentionally smaller than chips so it reads as a key rather than a tag.
+
+### Library Exports
+
+- Source: `src/index.ts`.
+- Re-exported `typography` so consumers can import `Heading`, `Text`, `Code`, `Kbd` from `@vunet/vuds-x` directly.
+
+### Demo App Fonts
+
+- Source: `src/main.tsx`.
+- Loaded `@fontsource/ibm-plex-sans/600.css` so the new title-tier weights render at the correct stroke (previously only 400/500 were loaded; 600 was being browser-synthesized).
+
+### Trial Page
+
+- Source: `src/pages/trial.tsx`.
+- Added a top-of-page Typography section ahead of the existing Buttons section so the type system reads as foundational. Sub-sections:
+  - **Typography Scale**: each of the 11 steps rendered with a left-rail spec hint (`size / line / tracking / weight`) and a real product-style sample on the right.
+  - **Tone**: full matrix of all eight tones, including the `inverse` tone rendered on a primary surface so the on-dark variant can be evaluated.
+  - **Tabular Numerals**: side-by-side comparison of proportional vs `tabular` so the column-alignment behavior is visible at a glance.
+  - **Heading by Level**: `<h1>`–`<h6>` with each one labelled with its default size mapping.
+  - **Code + Kbd**: inline `Code` variants (`default`, `ghost`, `muted`), a `block` snippet, and a `⌘ K` keyboard hint composed of `Kbd` chips.
+
 ## 2026-04-30
 
 Scope: Surface, layering, and form-control primitive rollout — Card, Skeleton, Avatar, Switch, Progress, Slider, Toggle, Toggle Group, Scroll Area, Accordion, Tabs, Popover, Select, Dialog, Sheet, and Command/Combobox.
